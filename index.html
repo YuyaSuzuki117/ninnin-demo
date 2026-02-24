@@ -30,10 +30,10 @@
   <!-- [11] ヒーロー画像プリロード -->
   <link rel="preload" as="image" href="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/index/main_visual_img.png">
 
-  <!-- [10] Google Fonts ウェイト削減: 400;700;900 のみ（600削除） -->
+  <!-- [10] Google Fonts: Noto Sans JP + Noto Serif JP + Fredoka -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css">
 
@@ -172,11 +172,19 @@
   }
   </script>
 
-  <!-- [12] SVG星アイコン用 symbol 定義 -->
+  <!-- [12] SVG星アイコン用 symbol 定義 + Pokeball symbol -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
     <defs>
       <symbol id="star-icon" viewBox="0 0 24 24">
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </symbol>
+      <symbol id="pokeball-icon" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/>
+        <path d="M2,50 H40" stroke="currentColor" stroke-width="4" fill="none"/>
+        <path d="M60,50 H98" stroke="currentColor" stroke-width="4" fill="none"/>
+        <circle cx="50" cy="50" r="12" fill="none" stroke="currentColor" stroke-width="4"/>
+        <circle cx="50" cy="50" r="6" fill="currentColor"/>
+        <path d="M2,50 A48,48 0 0,1 98,50" fill="currentColor" opacity="0.15"/>
       </symbol>
     </defs>
   </svg>
@@ -250,6 +258,36 @@
     <!-- ========== HERO ========== -->
     <section class="hero" id="hero">
       <div class="hero-overlay"></div>
+
+      <!-- Animated sparkle decorations -->
+      <div class="sparkle sparkle-1" aria-hidden="true"></div>
+      <div class="sparkle sparkle-2" aria-hidden="true"></div>
+      <div class="sparkle sparkle-3" aria-hidden="true"></div>
+      <div class="sparkle sparkle-4" aria-hidden="true"></div>
+      <div class="sparkle sparkle-5" aria-hidden="true"></div>
+
+      <!-- Floating Pokeball decoration -->
+      <div class="hero-pokeball-deco" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(26,26,46,0.12)" stroke-width="3"/>
+          <path d="M2,50 H40" stroke="rgba(26,26,46,0.12)" stroke-width="3" fill="none"/>
+          <path d="M60,50 H98" stroke="rgba(26,26,46,0.12)" stroke-width="3" fill="none"/>
+          <circle cx="50" cy="50" r="12" fill="none" stroke="rgba(26,26,46,0.12)" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="rgba(26,26,46,0.12)"/>
+          <path d="M2,50 A48,48 0 0,1 98,50" fill="rgba(26,26,46,0.08)"/>
+        </svg>
+      </div>
+      <div class="hero-pokeball-deco hero-pokeball-deco--2" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(26,26,46,0.08)" stroke-width="3"/>
+          <path d="M2,50 H40" stroke="rgba(26,26,46,0.08)" stroke-width="3" fill="none"/>
+          <path d="M60,50 H98" stroke="rgba(26,26,46,0.08)" stroke-width="3" fill="none"/>
+          <circle cx="50" cy="50" r="12" fill="none" stroke="rgba(26,26,46,0.08)" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="rgba(26,26,46,0.08)"/>
+          <path d="M2,50 A48,48 0 0,1 98,50" fill="rgba(26,26,46,0.06)"/>
+        </svg>
+      </div>
+
       <div class="hero-content wrapper">
         <div class="hero-text">
           <h1>ポケモンカード<br><span class="yellow">高額買取</span>専門店</h1>
@@ -274,23 +312,54 @@
       </div>
     </section>
 
+    <!-- ========== スクロールインジケーター ========== -->
+    <div class="scroll-indicator" aria-hidden="true">
+      <span class="scroll-indicator__text">スクロール</span>
+      <span class="scroll-indicator__arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </div>
+
     <!-- ========== 信頼性バッジ ========== -->
     <section class="trust-badges">
       <div class="wrapper">
-        <div class="badge fade-in"><span>年中無休</span>13:00-20:00</div>
-        <div class="badge fade-in"><span>全国対応</span>宅配買取OK</div>
-        <div class="badge fade-in"><span>即日査定</span>最短当日</div>
-        <div class="badge fade-in"><span>古物商許可</span>東京都公安委員会</div>
+        <div class="badge fade-in">
+          <svg class="badge-pokeball" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          <span>年中無休</span>13:00-20:00
+        </div>
+        <div class="badge fade-in">
+          <svg class="badge-pokeball" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          <span>全国対応</span>宅配買取OK
+        </div>
+        <div class="badge fade-in">
+          <svg class="badge-pokeball" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          <span>即日査定</span>最短当日
+        </div>
+        <div class="badge fade-in">
+          <svg class="badge-pokeball" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          <span>古物商許可</span>東京都公安委員会
+        </div>
       </div>
     </section>
 
     <!-- ========== サービス紹介（3カード） ========== -->
     <section class="service" id="service">
+      <!-- Decorative Pokeball -->
+      <div class="deco-pokeball deco-pokeball--right" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">ニンニンの3つのサービス</h2>
+        <span class="section-tag">SERVICE</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          ニンニンの3つのサービス
+        </h2>
         <p class="section-lead">お客様に合った買取方法をお選びいただけます</p>
         <div class="service-cards">
           <div class="service-card fade-in">
+            <div class="service-num" aria-hidden="true">01</div>
             <div class="service-card__img">
               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <rect x="1" y="3" width="15" height="13"/>
@@ -311,6 +380,7 @@
             </div>
           </div>
           <div class="service-card fade-in">
+            <div class="service-num" aria-hidden="true">02</div>
             <div class="service-card__img">
               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
@@ -328,6 +398,7 @@
             </div>
           </div>
           <div class="service-card fade-in">
+            <div class="service-num" aria-hidden="true">03</div>
             <div class="service-card__img">
               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -351,6 +422,10 @@
     <!-- ========== ABOUT（ニンニンが選ばれる理由）[13] 2カラム構成 ========== -->
     <section class="about" id="about">
       <div class="about-bg">
+        <!-- Decorative Pokeball -->
+        <div class="deco-pokeball deco-pokeball--left" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+        </div>
         <div class="wrapper">
           <div class="about-columns">
             <!-- 左カラム: ビジュアル要素 -->
@@ -359,7 +434,11 @@
             </div>
             <!-- 右カラム: テキスト -->
             <div class="about-text-box">
-              <h2 class="about-title">ニンニンが<br>選ばれる理由</h2>
+              <span class="section-tag">ABOUT</span>
+              <h2 class="about-title">
+                <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+                ニンニンが<br>選ばれる理由
+              </h2>
               <div class="about-points">
                 <div class="about-point fade-in">
                   <span class="point-num">01</span>
@@ -383,11 +462,23 @@
 
     <!-- ========== 買取価格ハイライト ========== -->
     <section class="price-highlight" id="price">
+      <!-- Decorative Pokeballs -->
+      <div class="deco-pokeball deco-pokeball--left" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
+      <div class="deco-pokeball deco-pokeball--right deco-pokeball--bottom" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">注目の買取価格</h2>
+        <span class="section-tag">PRICE</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          注目の買取価格
+        </h2>
         <p class="section-lead">最新の高額買取カードをご紹介</p>
         <div class="price-grid">
           <div class="price-card fade-in">
+            <div class="holo-shine"></div>
             <div class="price-card__rank">1</div>
             <div class="price-card__img">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/791.png" alt="がんばリーリエ SR（ソルガレオ）" width="200" height="200" loading="lazy">
@@ -399,6 +490,7 @@
             </div>
           </div>
           <div class="price-card fade-in">
+            <div class="holo-shine"></div>
             <div class="price-card__rank">2</div>
             <div class="price-card__img">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png" alt="リーリエの全力 SR（ルナアーラ）" width="200" height="200" loading="lazy">
@@ -410,6 +502,7 @@
             </div>
           </div>
           <div class="price-card fade-in">
+            <div class="holo-shine"></div>
             <div class="price-card__rank">3</div>
             <div class="price-card__img">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/921.png" alt="ナンジャモ SAR（パモ）" width="200" height="200" loading="lazy">
@@ -421,6 +514,7 @@
             </div>
           </div>
           <div class="price-card fade-in">
+            <div class="holo-shine"></div>
             <div class="price-card__rank">4</div>
             <div class="price-card__img">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="リザードンex SAR" width="200" height="200" loading="lazy">
@@ -432,6 +526,7 @@
             </div>
           </div>
           <div class="price-card fade-in">
+            <div class="holo-shine"></div>
             <div class="price-card__rank">5</div>
             <div class="price-card__img">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="ミュウツーGX SR" width="200" height="200" loading="lazy">
@@ -443,6 +538,7 @@
             </div>
           </div>
           <div class="price-card fade-in">
+            <div class="holo-shine"></div>
             <div class="price-card__rank">6</div>
             <div class="price-card__img">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="ピカチュウ AR（151）" width="200" height="200" loading="lazy">
@@ -462,8 +558,15 @@
 
     <!-- ========== 宅配買取セクション ========== -->
     <section class="takuhai" id="takuhai">
+      <div class="deco-pokeball deco-pokeball--right" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">ニンニンの宅配買取</h2>
+        <span class="section-tag">DELIVERY</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          ニンニンの宅配買取
+        </h2>
         <p class="section-lead">全国どこからでもお申し込みいただけます</p>
         <div class="takuhai-content">
           <div class="takuhai-left fade-in">
@@ -486,8 +589,15 @@
 
     <!-- ========== 店頭買取セクション ========== -->
     <section class="tentou" id="tentou">
+      <div class="deco-pokeball deco-pokeball--left" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">ニンニンの店頭買取</h2>
+        <span class="section-tag">IN-STORE</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          ニンニンの店頭買取
+        </h2>
         <p class="section-lead">その場で無料査定！即現金買取りを行っております。</p>
         <div class="step-flow">
           <div class="step-item fade-in">
@@ -538,8 +648,15 @@
 
     <!-- ========== 買取カテゴリ ========== -->
     <section class="category" id="category">
+      <div class="deco-pokeball deco-pokeball--right" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="170" height="170" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">ポケモンカード買取カテゴリ</h2>
+        <span class="section-tag">CATEGORY</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          ポケモンカード買取カテゴリ
+        </h2>
         <p class="section-lead">14カテゴリの買取に対応しています</p>
         <div class="category-grid">
           <a href="#contact" class="category-card fade-in">
@@ -608,49 +725,56 @@
 
     <!-- ========== お客様の声 [12] SVG星を symbol + use パターンに最適化 ========== -->
     <section class="reviews" id="reviews">
+      <div class="deco-pokeball deco-pokeball--left" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">お客様の声</h2>
+        <span class="section-tag">REVIEW</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          お客様の声
+        </h2>
         <p class="section-lead">多くのお客様にご満足いただいています</p>
         <div class="review-cards">
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「初めての宅配買取でしたが、丁寧な対応で安心できました。査定額も想像以上で大満足です！」</p>
             <p class="review-author">東京都 T.K様（30代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「秋葉原店に持ち込みました。スタッフの方がカードの状態を丁寧に見てくれて、納得の金額でした。」</p>
             <p class="review-author">千葉県 S.M様（20代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「他店より高い買取価格でびっくり。宅配買取の10%UPも大きいです。リピート確定！」</p>
             <p class="review-author">大阪府 Y.H様（40代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="4つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#ccc" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「コレクション整理で大量に送りましたが、1枚1枚きちんと査定してもらえました。また利用します。」</p>
@@ -658,11 +782,11 @@
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FFCB05" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「池袋店で即現金買取してもらいました。駅からも近くてアクセスも良いです。対応も早くて助かりました。」</p>
             <p class="review-author">埼玉県 K.N様（20代）</p>
@@ -673,8 +797,15 @@
 
     <!-- ========== 店舗案内 ========== -->
     <section class="shop" id="shop">
+      <div class="deco-pokeball deco-pokeball--right" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading section-heading--white">店舗案内</h2>
+        <span class="section-tag section-tag--light">SHOP</span>
+        <h2 class="section-heading section-heading--white">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          店舗案内
+        </h2>
         <p class="section-lead section-lead--white">秋葉原・中野・池袋・大阪に全7店舗展開中</p>
 
         <div class="shop-grid">
@@ -792,7 +923,11 @@
     <!-- ========== お知らせ ========== -->
     <section class="news" id="news">
       <div class="wrapper">
-        <h2 class="section-heading">お知らせ</h2>
+        <span class="section-tag">NEWS</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          お知らせ
+        </h2>
         <div class="news-area">
           <div class="news-main">
             <ul class="blog_area">
@@ -842,8 +977,15 @@
 
     <!-- ========== FAQ ========== -->
     <section class="faq" id="faq">
+      <div class="deco-pokeball deco-pokeball--right" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
-        <h2 class="section-heading">よくあるご質問</h2>
+        <span class="section-tag">FAQ</span>
+        <h2 class="section-heading">
+          <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+          よくあるご質問
+        </h2>
         <p class="section-lead">お客様からよくいただくご質問をまとめました</p>
         <div class="faq-list">
           <details class="faq-item">
@@ -893,10 +1035,17 @@
     <!-- ========== CONTACT（フォーム付き） ========== -->
     <!-- [1] name属性をJSバリデーションと一致 / [5] プライバシーチェックボックスにid+labelのfor / [6] aria-describedby用ID準備 -->
     <section class="contact" id="contact">
+      <div class="deco-pokeball deco-pokeball--left" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+      </div>
       <div class="wrapper">
+        <span class="section-tag">CONTACT</span>
         <div class="contact-grid">
           <div class="contact-info">
-            <h2 class="section-heading">お気軽にお問い合わせください</h2>
+            <h2 class="section-heading">
+              <svg class="heading-pokeball" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#pokeball-icon"/></svg>
+              お気軽にお問い合わせください
+            </h2>
             <!-- [4] SP電話リンクに aria-label -->
             <p class="contact-tel"><a href="tel:0000000000" aria-label="0X-XXXX-XXXXに電話する">0X-XXXX-XXXX</a></p>
             <p class="contact-hours">年中無休 / 受付時間 13:00-20:00</p>
@@ -966,6 +1115,7 @@
 
   <!-- ========== FOOTER ========== -->
   <footer class="site-footer">
+    <div class="footer-yellow-stripe" aria-hidden="true"></div>
     <div class="wrapper">
       <div class="footer-left">
         <div class="footer-logo">

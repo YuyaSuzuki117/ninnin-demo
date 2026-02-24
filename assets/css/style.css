@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* ============================================================
-   NinNin — Complete Redesign
-   Design: Japanese Modern x Trading Card Premium Feel
+   NinNin — ピカチュウイエロー × POP × 最高級おしゃれ
+   Design: Maximum POP + Pikachu Yellow Premium
    Architecture: CSS Variables + Grid + Flexbox (No float, No !important)
    ============================================================ */
 
@@ -9,70 +9,79 @@
    0. CSS VARIABLES
    ========================================================== */
 :root {
-  /* Brand Colors */
+  /* === Pikachu Yellow System === */
+  --color-pikachu: #FFCB05;
+  --color-pikachu-dark: #E6B800;
+  --color-pikachu-light: #FFF3B0;
+  --color-pikachu-pale: #FFFDE7;
+
+  /* === Dark System === */
+  --color-dark: #1a1a2e;
+  --color-dark-secondary: #16213e;
+
+  /* === Accent === */
+  --color-red: #FF6B6B;
+  --color-red-dark: #e85555;
+  --color-white: #ffffff;
+
+  /* === Backgrounds === */
+  --color-bg: #FFFDF5;
+  --color-bg-alt: #FFF8E1;
+
+  /* === Text === */
+  --color-text: #1a1a2e;
+  --color-text-sub: #555;
+  --color-text-light: #888;
+  --color-text-inverse: #ffffff;
+
+  /* === Brand (NinNin orange — secondary role) === */
   --color-primary: #d8613c;
   --color-primary-dark: #b84e30;
   --color-primary-light: #e8845f;
-  --color-secondary: #c2a990;
-  --color-secondary-light: #d4bfa8;
-  --color-accent: #cfcabe;
-  --color-gold: #b8860b;
-  --color-gold-light: #daa520;
-  --color-pikachu-yellow: #FFCB05;
-  --color-pikachu-yellow-dark: #E6B800;
-  --color-pikachu-yellow-light: #FFF3B0;
 
-  /* Backgrounds */
-  --color-bg: #f9f9f9;
-  --color-bg-alt: #f0ebe4;
-  --color-bg-dark: #1a1a1a;
-  --color-white: #fff;
-
-  /* Text — [Fix #14] contrast improved: #777 -> #666 */
-  --color-text: #111;
-  --color-text-sub: #555;
-  --color-text-light: #666;
-  --color-text-inverse: #fff;
-
-  /* Functional Colors */
+  /* === Functional === */
   --color-line: #06C755;
   --color-error: #dc3545;
   --color-success: #28a745;
 
-  /* Spacing */
+  /* === Spacing === */
   --section-gap: 100px;
   --section-gap-sp: 60px;
   --wrapper-width: 1200px;
   --wrapper-padding: 24px;
 
-  /* Fonts */
+  /* === Fonts === */
   --font-body: "Noto Sans JP", sans-serif;
   --font-heading: "Noto Serif JP", serif;
+  --font-accent: "Fredoka", sans-serif;
 
-  /* Border Radius */
+  /* === Border Radius === */
   --radius-sm: 6px;
   --radius: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-  --shadow: 0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-  --shadow-xl: 0 12px 48px rgba(0,0,0,0.16);
+  /* === Shadows === */
+  --shadow-sm: 0 2px 8px rgba(26, 26, 46, 0.06);
+  --shadow: 0 4px 16px rgba(26, 26, 46, 0.08);
+  --shadow-lg: 0 8px 32px rgba(26, 26, 46, 0.12);
+  --shadow-xl: 0 12px 48px rgba(26, 26, 46, 0.16);
+  --shadow-pikachu: 0 4px 20px rgba(255, 203, 5, 0.25);
+  --shadow-pikachu-lg: 0 8px 40px rgba(255, 203, 5, 0.35);
 
-  /* Transitions */
+  /* === Transitions === */
   --transition-fast: 0.2s ease;
   --transition: 0.3s ease;
   --transition-slow: 0.5s ease;
 
-  /* [Fix #4] z-index system */
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-fixed: 300;
+  /* === Z-Index Scale === */
+  --z-base: 1;
+  --z-card: 10;
+  --z-header: 100;
+  --z-menu: 200;
+  --z-floating: 300;
   --z-modal: 400;
-  --z-floating: 500;
 }
 
 /* ==========================================================
@@ -103,7 +112,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* [Fix #2] text-wrap for headings and body paragraphs */
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
@@ -119,7 +127,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
 }
 
 ul {
@@ -137,9 +145,7 @@ address {
   font-style: normal;
 }
 
-dl,
-dt,
-dd {
+dl, dt, dd {
   margin: 0;
 }
 
@@ -148,7 +154,7 @@ button {
   cursor: pointer;
 }
 
-/* [Fix #7] Focus ring for all interactive elements */
+/* Focus ring — pikachu yellow for on-brand accessibility */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -156,7 +162,7 @@ select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-pikachu);
   outline-offset: 2px;
 }
 
@@ -178,7 +184,6 @@ summary:focus-visible,
   display: none;
 }
 
-/* Ensure SP elements are hidden at intermediate sizes (769px+) */
 @media (min-width: 769px) {
   .sp-on {
     display: none;
@@ -206,19 +211,40 @@ summary:focus-visible,
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
-  height: 3px;
-  background: var(--color-pikachu-yellow);
+  height: 4px;
+  background: var(--color-pikachu);
+  border-radius: 2px;
 }
 
 .section-heading--white {
-  background: var(--color-primary);
   color: var(--color-text-inverse);
-  padding: 14px 30px;
-  border-radius: var(--radius-sm);
 }
 
 .section-heading--white::after {
-  display: none;
+  background: var(--color-pikachu);
+}
+
+/* Section tag — Fredoka accent above heading */
+.section-tag {
+  display: block;
+  font-family: var(--font-accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-pikachu);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Heading pokeball icon */
+.heading-pokeball {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-pikachu);
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
 }
 
 .section-lead {
@@ -230,7 +256,7 @@ summary:focus-visible,
 }
 
 .section-lead--white {
-  color: var(--color-text-inverse);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ==========================================================
@@ -239,10 +265,10 @@ summary:focus-visible,
 .site-header {
   position: sticky;
   top: 0;
-  z-index: var(--z-floating);
+  z-index: var(--z-header);
   background: var(--color-white);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition);
+  transition: box-shadow var(--transition), transform 0.3s ease;
 }
 
 .site-header.is-scrolled {
@@ -251,7 +277,7 @@ summary:focus-visible,
 
 /* --- Header Top (PC) --- */
 .header-top {
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-pikachu-light);
 }
 
 .header-top .wrapper {
@@ -291,13 +317,13 @@ summary:focus-visible,
   left: 0;
   width: 100%;
   height: 1px;
-  background: var(--color-accent);
+  background: var(--color-pikachu-light);
 }
 
 .header-tel {
   font-size: 1.625rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-dark);
   letter-spacing: 0.05em;
 }
 
@@ -313,7 +339,6 @@ summary:focus-visible,
   gap: 8px;
 }
 
-/* [Fix #1] transition: all -> specific properties */
 .btn-header {
   display: inline-flex;
   align-items: center;
@@ -328,31 +353,31 @@ summary:focus-visible,
 }
 
 .btn-header--primary {
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
 }
 
 .btn-header--primary:hover {
-  background: var(--color-primary-dark);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu-dark);
+  color: var(--color-dark);
   transform: translateY(-1px);
 }
 
 .btn-header--secondary {
   background: var(--color-white);
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+  color: var(--color-dark);
+  border-color: var(--color-pikachu);
 }
 
 .btn-header--secondary:hover {
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
 }
 
 /* --- Global Navigation --- */
 .g-navi {
-  background: var(--color-bg-dark);
-  border-bottom: 3px solid var(--color-pikachu-yellow);
+  background: var(--color-dark);
+  border-bottom: 3px solid var(--color-pikachu);
 }
 
 .g-navi ul {
@@ -373,7 +398,7 @@ summary:focus-visible,
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.2);
   font-size: 0.875rem;
 }
 
@@ -395,14 +420,14 @@ summary:focus-visible,
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: var(--color-pikachu-yellow);
+  height: 3px;
+  background: var(--color-pikachu);
   transform: scaleX(0);
   transition: transform var(--transition);
 }
 
 .g-navi li a:hover {
-  color: var(--color-pikachu-yellow);
+  color: var(--color-pikachu);
 }
 
 .g-navi li a:hover::after {
@@ -416,8 +441,6 @@ summary:focus-visible,
 }
 
 /* --- SP Header --- */
-/* NOTE: display:flex is set inside @media (max-width:768px) only.
-   Base display is controlled by .sp-on { display:none } */
 .sp_header_block {
   justify-content: space-between;
   align-items: center;
@@ -428,11 +451,11 @@ summary:focus-visible,
   height: 32px;
 }
 
-/* Hamburger button */
+/* Hamburger button — pikachu yellow */
 .drop_btn {
   width: 52px;
   height: 52px;
-  background-color: var(--color-primary);
+  background-color: var(--color-pikachu);
   border: none;
   position: relative;
   border-radius: var(--radius-sm);
@@ -440,15 +463,14 @@ summary:focus-visible,
 }
 
 .drop_btn:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-pikachu-dark);
 }
 
-/* [Fix #1] transition: all -> specific properties for hamburger spans */
 .drop_btn span {
   display: block;
   width: 22px;
   height: 2px;
-  background: var(--color-text-inverse);
+  background: var(--color-dark);
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -473,13 +495,13 @@ summary:focus-visible,
   transform: translateX(-50%) rotate(-45deg);
 }
 
-/* [Fix #11] Drop menu slide animation */
+/* Drop menu slide animation */
 .drop_menu {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
   background: var(--color-white);
-  border-top: 1px solid var(--color-accent);
+  border-top: 2px solid var(--color-pikachu);
   box-shadow: var(--shadow);
   transition: max-height 0.4s ease, opacity 0.3s ease;
 }
@@ -496,8 +518,8 @@ summary:focus-visible,
 
 .drop_menu li {
   min-width: 50%;
-  border-bottom: 1px solid var(--color-accent);
-  border-right: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-pikachu-light);
+  border-right: 1px solid var(--color-pikachu-light);
 }
 
 .drop_menu li a {
@@ -505,33 +527,33 @@ summary:focus-visible,
   padding: 14px 20px;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-dark);
   transition: background-color var(--transition-fast);
 }
 
 .drop_menu li a:hover {
-  background: var(--color-bg-alt);
+  background: var(--color-pikachu-pale);
+  color: var(--color-dark);
 }
 
 /* ==========================================================
-   5. HERO (first view)
+   5. HERO (Maximum POP — Pikachu Yellow Burst)
    ========================================================== */
-/* --- Hero: シンプルなダーク背景 + ピカチュウ --- */
 .hero {
   position: relative;
   min-height: 80vh;
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2019 50%, #3a2a10 100%);
+  background: linear-gradient(135deg, var(--color-pikachu) 0%, #FFD54F 50%, #FFF176 100%);
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 80% 40%, rgba(255,203,5,0.18) 0%, transparent 50%),
-    radial-gradient(ellipse at 20% 80%, rgba(216,97,60,0.12) 0%, transparent 50%);
+    radial-gradient(ellipse at 80% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(255, 203, 5, 0.3) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -548,33 +570,35 @@ summary:focus-visible,
 
 .hero-text {
   max-width: 560px;
-  color: var(--color-text-inverse);
+  color: var(--color-dark);
 }
 
 .hero h1 {
   font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
   font-weight: 900;
   line-height: 1.15;
   margin-bottom: 20px;
-  color: var(--color-white);
+  color: var(--color-dark);
 }
 
 .hero h1 .yellow {
-  color: var(--color-pikachu-yellow);
+  color: var(--color-dark);
+  background: linear-gradient(180deg, transparent 60%, rgba(255, 255, 255, 0.5) 60%);
+  display: inline;
 }
 
 .hero-sub {
   font-size: 1.1rem;
-  opacity: 0.8;
+  color: rgba(26, 26, 46, 0.7);
   margin-bottom: 32px;
   line-height: 1.7;
 }
 
 .hero-badge {
   display: inline-block;
-  background: var(--color-pikachu-yellow);
-  color: var(--color-bg-dark);
+  background: var(--color-dark);
+  color: var(--color-pikachu);
   padding: 8px 24px;
   border-radius: var(--radius-full);
   font-size: 0.85rem;
@@ -586,26 +610,66 @@ summary:focus-visible,
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .cta-hero-main {
   font-size: 1.1rem;
   padding: 18px 40px;
-  background: var(--color-pikachu-yellow);
-  color: var(--color-bg-dark);
-  border: 2px solid var(--color-pikachu-yellow);
+  background: var(--color-dark);
+  color: var(--color-pikachu);
+  border: 2px solid var(--color-dark);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  transition: background-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 .cta-hero-main:hover {
-  background: var(--color-pikachu-yellow-dark);
-  border-color: var(--color-pikachu-yellow-dark);
-  color: var(--color-bg-dark);
+  background: var(--color-dark-secondary);
+  border-color: var(--color-dark-secondary);
+  color: var(--color-pikachu);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
+/* Hero visuals */
 .hero-visual {
   position: relative;
   width: 420px;
   flex-shrink: 0;
+}
+
+/* Left visual: NinNin character */
+.hero-visual-left {
+  position: absolute;
+  left: -80px;
+  bottom: -40px;
+  width: 160px;
+  z-index: 3;
+  animation: float 3.5s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.hero-visual-left img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 24px rgba(26, 26, 46, 0.2));
+}
+
+/* Right visual: Pikachu */
+.hero-visual-right {
+  position: absolute;
+  right: -40px;
+  bottom: -20px;
+  width: 180px;
+  z-index: 3;
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-visual-right img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 24px rgba(255, 203, 5, 0.4));
 }
 
 .hero-ninnin {
@@ -616,7 +680,7 @@ summary:focus-visible,
 .hero-ninnin img {
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 20px 40px rgba(255,203,5,0.35));
+  filter: drop-shadow(0 20px 40px rgba(26, 26, 46, 0.2));
 }
 
 .hero-pikachu-mini {
@@ -633,13 +697,29 @@ summary:focus-visible,
   width: 100%;
   height: auto;
   background: transparent;
-  filter: drop-shadow(0 8px 20px rgba(255,203,5,0.4));
+  filter: drop-shadow(0 8px 20px rgba(255, 203, 5, 0.4));
   mix-blend-mode: normal;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+/* Hero floating Pokeball decorations */
+.hero-pokeball-deco {
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  opacity: 0.12;
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-pokeball-deco--2 {
+  top: auto;
+  bottom: 12%;
+  right: auto;
+  left: 5%;
+  opacity: 0.08;
+  animation-delay: 2s;
+  animation-duration: 8s;
 }
 
 /* Stats badges */
@@ -655,64 +735,121 @@ summary:focus-visible,
 
 .stat-num {
   display: block;
+  font-family: var(--font-accent);
   font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 900;
-  color: var(--color-gold-light);
+  font-weight: 700;
+  color: var(--color-dark);
   line-height: 1.2;
 }
 
 .stat-label {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.75);
+  color: rgba(26, 26, 46, 0.6);
   margin-top: 4px;
 }
 
+/* Sparkle decorations */
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-white);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.sparkle:nth-child(1) { top: 15%; left: 10%; width: 6px; height: 6px; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 25%; right: 15%; width: 10px; height: 10px; animation-delay: 0.5s; }
+.sparkle:nth-child(3) { bottom: 30%; left: 25%; width: 5px; height: 5px; animation-delay: 1s; }
+.sparkle:nth-child(4) { top: 40%; left: 60%; width: 8px; height: 8px; animation-delay: 1.5s; }
+.sparkle:nth-child(5) { bottom: 20%; right: 30%; width: 12px; height: 12px; animation-delay: 0.7s; }
+.sparkle:nth-child(6) { top: 60%; left: 5%; width: 7px; height: 7px; animation-delay: 1.2s; }
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(26, 26, 46, 0.5);
+  font-size: 0.6875rem;
+  font-family: var(--font-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.scroll-indicator::after {
+  content: "";
+  width: 2px;
+  height: 20px;
+  background: rgba(26, 26, 46, 0.3);
+  border-radius: 1px;
+}
+
 /* ==========================================================
-   6. Trust Badges (.trust-badges)
+   6. TRUST BADGES
    ========================================================== */
 .trust-badges {
-  background: var(--color-bg-dark);
-  padding: 24px 0;
+  background: var(--color-dark);
+  padding: 28px 0;
 }
 
 .trust-badges .wrapper {
   display: flex;
   justify-content: center;
-  gap: 48px;
+  gap: 32px;
 }
 
 .badge {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
   color: var(--color-text-inverse);
   font-size: 0.8125rem;
   line-height: 1.5;
+  padding: 10px 24px;
+  border: 1px solid rgba(255, 203, 5, 0.3);
+  border-radius: var(--radius-full);
+  background: rgba(255, 203, 5, 0.08);
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.badge:hover {
+  border-color: var(--color-pikachu);
+  background: rgba(255, 203, 5, 0.15);
 }
 
 .badge span {
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--color-pikachu-yellow);
-  margin-bottom: 2px;
+  color: var(--color-pikachu);
+  margin-bottom: 0;
 }
 
 /* ==========================================================
-   7. CTA Button Group
+   7. CTA BUTTON GROUP
    ========================================================== */
-/* [Fix #1] transition: all -> specific properties */
 .cta-primary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 16px 32px;
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
   border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
   transition: background-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pikachu);
   border: none;
   cursor: pointer;
   text-align: center;
@@ -720,10 +857,10 @@ summary:focus-visible,
 }
 
 .cta-primary:hover {
-  background: var(--color-primary-dark);
-  color: var(--color-white);
+  background: var(--color-pikachu-dark);
+  color: var(--color-dark);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-pikachu-lg);
 }
 
 .cta-tel {
@@ -731,8 +868,8 @@ summary:focus-visible,
   align-items: center;
   gap: 8px;
   padding: 16px 32px;
-  background: var(--color-bg-dark);
-  color: var(--color-text-inverse);
+  background: var(--color-dark);
+  color: var(--color-pikachu);
   border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 1.125rem;
@@ -742,10 +879,10 @@ summary:focus-visible,
 }
 
 .cta-tel:hover {
-  color: var(--color-text-inverse);
+  color: var(--color-pikachu);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-  opacity: 0.9;
+  background: var(--color-dark-secondary);
 }
 
 .cta-line {
@@ -775,12 +912,25 @@ summary:focus-visible,
   font-size: 0.875rem;
 }
 
-/* [Fix #10] cta-submit pulse replaced with pseudo-element animation */
+/* Submit CTA with pulse ring */
 .cta-submit {
   width: 100%;
   padding: 18px;
   font-size: 1.125rem;
   position: relative;
+  background: var(--color-pikachu);
+  color: var(--color-dark);
+  border: none;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.cta-submit:hover {
+  background: var(--color-pikachu-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-pikachu-lg);
 }
 
 .cta-submit::before {
@@ -788,30 +938,10 @@ summary:focus-visible,
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: inherit;
+  background: var(--color-pikachu);
   z-index: -1;
   opacity: 0.5;
   animation: pulse-ring 2.5s infinite;
-}
-
-/* Hero CTA area */
-.hero-cta {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-/* [Fix #10] Pulse animation: box-shadow replaced with pseudo-element + opacity + transform: scale() */
-@keyframes pulse-ring {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(1.15);
-  }
 }
 
 /* Section CTA */
@@ -819,7 +949,7 @@ summary:focus-visible,
   text-align: center;
   margin-top: 48px;
   padding-top: 32px;
-  border-top: 1px solid var(--color-accent);
+  border-top: 1px solid var(--color-pikachu-light);
 }
 
 .section-cta p {
@@ -829,25 +959,13 @@ summary:focus-visible,
 }
 
 /* ==========================================================
-   8. SERVICE (3-column service introduction)
+   8. SERVICE SECTION
    ========================================================== */
-/* [Fix #12] Wave separator for service section */
 .service {
   padding: var(--section-gap) 0;
   background: var(--color-bg);
   position: relative;
-}
-
-.service::after {
-  content: "";
-  position: absolute;
-  bottom: -30px;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  z-index: 1;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 C200,30 400,0 600,15 C800,30 1000,0 1200,15 L1200,30 L0,30Z' fill='%23f9f9f9'/%3E%3C/svg%3E") repeat-x;
-  background-size: 1200px 30px;
+  overflow: hidden;
 }
 
 .service-cards {
@@ -862,11 +980,27 @@ summary:focus-visible,
   transition: box-shadow var(--transition), transform var(--transition);
   border-radius: var(--radius);
   overflow: hidden;
+  border-left: 4px solid var(--color-pikachu);
+  position: relative;
 }
 
 .service-card:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+}
+
+/* Service number (01/02/03) */
+.service-num {
+  font-family: var(--font-accent);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-pikachu);
+  opacity: 0.3;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  line-height: 1;
+  z-index: var(--z-base);
 }
 
 .service-card__img {
@@ -874,9 +1008,9 @@ summary:focus-visible,
   align-items: center;
   justify-content: center;
   height: 180px;
-  background: var(--color-bg-alt);
+  background: var(--color-pikachu-pale);
   border-radius: var(--radius) var(--radius) 0 0;
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
 }
 
 .service-card__body {
@@ -893,7 +1027,7 @@ summary:focus-visible,
   width: 60px;
   height: 60px;
   background: var(--color-white);
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--color-pikachu);
   border-radius: 50%;
   margin-bottom: 12px;
   box-shadow: var(--shadow-sm);
@@ -910,7 +1044,7 @@ summary:focus-visible,
 .service-card__body .line {
   width: 40px;
   height: 2px;
-  background: var(--color-gold);
+  background: var(--color-pikachu);
   margin: 0 auto 16px;
 }
 
@@ -922,14 +1056,13 @@ summary:focus-visible,
 }
 
 /* Button (border + scale fill) */
-/* [Fix #1] transition: all -> specific properties */
 .button {
   display: inline-block;
   position: relative;
   z-index: 2;
   background-color: var(--color-white);
-  border: 2px solid var(--color-text);
-  color: var(--color-text);
+  border: 2px solid var(--color-dark);
+  color: var(--color-dark);
   line-height: 50px;
   padding: 0 40px;
   overflow: hidden;
@@ -947,7 +1080,7 @@ summary:focus-visible,
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--color-text);
+  background: var(--color-dark);
   z-index: -1;
   transform: scale(0.5);
   opacity: 0;
@@ -955,7 +1088,7 @@ summary:focus-visible,
 }
 
 .button:hover {
-  color: var(--color-text-inverse);
+  color: var(--color-pikachu);
 }
 
 .button:hover::after {
@@ -970,43 +1103,41 @@ summary:focus-visible,
 }
 
 .button--white::after {
-  background: var(--color-text-inverse);
+  background: var(--color-pikachu);
 }
 
 .button--white:hover {
-  color: var(--color-text);
+  color: var(--color-dark);
 }
 
 /* ==========================================================
-   9. ABOUT (Reasons to choose us)
+   9. ABOUT SECTION (Reasons to choose us)
    ========================================================== */
-/* [Fix #12] Wave separator for about section */
 .about {
   position: relative;
   overflow: hidden;
 }
 
-.about::after {
-  content: "";
-  position: absolute;
-  bottom: -30px;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  z-index: 1;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 C200,30 400,0 600,15 C800,30 1000,0 1200,15 L1200,30 L0,30Z' fill='%23c2a990'/%3E%3C/svg%3E") repeat-x;
-  background-size: 1200px 30px;
-}
-
 .about-bg {
-  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 60%, var(--color-primary) 100%);
+  background: var(--color-dark);
   min-height: 460px;
   display: flex;
   align-items: center;
   padding: var(--section-gap) 0;
+  position: relative;
 }
 
-/* [Fix #15] About section 2-column grid layout */
+/* Pikachu yellow accent line at top */
+.about-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-pikachu), var(--color-pikachu-dark), var(--color-pikachu));
+}
+
 .about-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1035,7 +1166,7 @@ summary:focus-visible,
   font-weight: 900;
   margin-bottom: 32px;
   line-height: 1.4;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+  color: var(--color-white);
 }
 
 .about-points {
@@ -1047,46 +1178,50 @@ summary:focus-visible,
   align-items: center;
   gap: 16px;
   margin-bottom: 16px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 203, 5, 0.08);
   padding: 16px 20px;
   border-radius: var(--radius-sm);
+  border-left: 4px solid var(--color-pikachu);
   backdrop-filter: blur(4px);
-  transition: background-color var(--transition);
+  transition: background-color var(--transition), border-color var(--transition);
 }
 
 .about-point:hover {
-  background: rgba(255,255,255,0.22);
+  background: rgba(255, 203, 5, 0.15);
 }
 
 .point-num {
+  font-family: var(--font-accent);
   font-size: 1.75rem;
-  font-weight: 900;
-  color: var(--color-text-inverse);
+  font-weight: 700;
+  color: var(--color-pikachu);
   flex-shrink: 0;
   width: 50px;
   text-align: center;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .about-point p {
   font-size: 0.9375rem;
   line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .about-point strong {
-  color: var(--color-text-inverse);
+  color: var(--color-pikachu);
   font-weight: 700;
   text-decoration: underline;
-  text-decoration-color: rgba(255,255,255,0.5);
+  text-decoration-color: rgba(255, 203, 5, 0.4);
   text-underline-offset: 3px;
 }
 
 /* ==========================================================
-   10. Price Highlight (.price-highlight)
+   10. PRICE HIGHLIGHT
    ========================================================== */
 .price-highlight {
   padding: var(--section-gap) 0;
   background: var(--color-white);
+  position: relative;
+  overflow: hidden;
 }
 
 .price-grid {
@@ -1101,15 +1236,17 @@ summary:focus-visible,
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  border: 2px solid transparent;
 }
 
 .price-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 8px 32px rgba(255, 203, 5, 0.25);
+  border-color: var(--color-pikachu);
 }
 
-/* [Fix #9] will-change: transform only on :hover, not always */
+/* 3D tilt effect */
 .price-card--3d {
   transition: transform 0.3s ease;
 }
@@ -1118,13 +1255,37 @@ summary:focus-visible,
   will-change: transform;
 }
 
+/* HOLOGRAPHIC SHINE EFFECT */
+.holo-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 203, 5, 0.3) 45%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 203, 5, 0.3) 55%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: var(--z-card);
+  border-radius: inherit;
+}
+
+.price-card:hover .holo-shine {
+  opacity: 1;
+}
+
+/* Rank badge — pikachu yellow circle */
 .price-card__rank {
   position: absolute;
   top: 12px;
   left: 12px;
-  z-index: 2;
-  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
-  color: var(--color-text-inverse);
+  z-index: calc(var(--z-card) + 1);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1132,6 +1293,7 @@ summary:focus-visible,
   align-items: center;
   justify-content: center;
   font-weight: 900;
+  font-family: var(--font-accent);
   font-size: 0.875rem;
   box-shadow: var(--shadow-sm);
 }
@@ -1142,7 +1304,7 @@ summary:focus-visible,
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background: var(--color-bg);
+  background: var(--color-pikachu-pale);
 }
 
 .price-card__img img {
@@ -1174,24 +1336,29 @@ summary:focus-visible,
 }
 
 .price-card__price {
-  color: var(--color-primary);
+  color: var(--color-red);
   font-size: 1.5rem;
   font-weight: 900;
+  font-family: var(--font-accent);
   line-height: 1.2;
 }
 
+.price-card__price span,
 .price-card__price small {
   font-size: 0.75rem;
   font-weight: 400;
   color: var(--color-text-sub);
+  font-family: var(--font-body);
 }
 
 /* ==========================================================
-   11. Delivery Purchase (.takuhai)
+   11. DELIVERY PURCHASE (.takuhai)
    ========================================================== */
 .takuhai {
   padding: var(--section-gap) 0;
   background: var(--color-white);
+  position: relative;
+  overflow: hidden;
 }
 
 .takuhai-content {
@@ -1211,10 +1378,10 @@ summary:focus-visible,
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  background: var(--color-bg-alt);
+  background: var(--color-pikachu-pale);
   padding: 20px;
   border-radius: var(--radius-sm);
-  border-left: 4px solid var(--color-primary);
+  border-left: 4px solid var(--color-pikachu);
 }
 
 .notice-icon {
@@ -1229,16 +1396,18 @@ summary:focus-visible,
 }
 
 .takuhai-notice strong {
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
   font-weight: 700;
 }
 
 /* ==========================================================
-   12. In-Store Purchase (.tentou)
+   12. IN-STORE PURCHASE (.tentou)
    ========================================================== */
 .tentou {
   padding: var(--section-gap) 0;
   background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
 }
 
 .step-flow {
@@ -1268,9 +1437,9 @@ summary:focus-visible,
   width: 120px;
   height: 120px;
   margin: 0 auto 16px;
-  background: var(--color-bg-alt);
+  background: var(--color-pikachu-pale);
   border-radius: 50%;
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
 }
 
 .step-num {
@@ -1279,15 +1448,16 @@ summary:focus-visible,
   justify-content: center;
   margin-top: -22px;
   position: relative;
-  z-index: 1;
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
+  z-index: var(--z-base);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
+  font-family: var(--font-accent);
   font-size: 1.125rem;
-  font-weight: 900;
+  font-weight: 700;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-pikachu);
 }
 
 .step-item h3 {
@@ -1306,11 +1476,13 @@ summary:focus-visible,
 }
 
 /* ==========================================================
-   13. Purchase Category (.category)
+   13. PURCHASE CATEGORY (.category)
    ========================================================== */
 .category {
   padding: var(--section-gap) 0;
   background: var(--color-white);
+  position: relative;
+  overflow: hidden;
 }
 
 .category-grid {
@@ -1323,23 +1495,23 @@ summary:focus-visible,
   text-align: center;
   display: block;
   background: var(--color-white);
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--color-pikachu-light);
   border-radius: var(--radius);
   overflow: hidden;
   transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 .category-card:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-pikachu);
   transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pikachu);
 }
 
 .category-card__img {
   width: 100%;
   height: 140px;
   overflow: hidden;
-  background: var(--color-bg);
+  background: var(--color-pikachu-pale);
 }
 
 .category-card__img img {
@@ -1359,31 +1531,18 @@ summary:focus-visible,
   font-size: 0.6875rem;
   font-weight: 700;
   color: var(--color-text);
-  background: var(--color-bg);
-  border-top: 1px solid var(--color-accent);
+  background: var(--color-white);
+  border-top: 1px solid var(--color-pikachu-light);
   line-height: 1.3;
 }
 
 /* ==========================================================
-   14. Customer Reviews (.reviews)
+   14. CUSTOMER REVIEWS
    ========================================================== */
-/* [Fix #12] Wave separator for reviews section */
 .reviews {
   padding: var(--section-gap) 0;
   background: var(--color-bg-alt);
   position: relative;
-}
-
-.reviews::after {
-  content: "";
-  position: absolute;
-  bottom: -30px;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  z-index: 1;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 C200,30 400,0 600,15 C800,30 1000,0 1200,15 L1200,30 L0,30Z' fill='%23f0ebe4'/%3E%3C/svg%3E") repeat-x;
-  background-size: 1200px 30px;
 }
 
 .review-cards {
@@ -1393,12 +1552,25 @@ summary:focus-visible,
 }
 
 .review-card {
-  background: var(--color-white);
+  background: var(--color-pikachu-pale);
   padding: 32px;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   position: relative;
   transition: transform var(--transition), box-shadow var(--transition);
+}
+
+/* Speech bubble triangle */
+.review-card::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 32px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid var(--color-pikachu-pale);
 }
 
 .review-card::before {
@@ -1407,7 +1579,7 @@ summary:focus-visible,
   top: 16px;
   left: 24px;
   font-size: 3rem;
-  color: var(--color-gold);
+  color: var(--color-pikachu);
   font-family: Georgia, serif;
   line-height: 1;
   opacity: 0.5;
@@ -1419,10 +1591,16 @@ summary:focus-visible,
 }
 
 .review-stars {
-  color: var(--color-gold);
+  color: var(--color-pikachu);
   font-size: 1.25rem;
   margin-bottom: 16px;
   letter-spacing: 2px;
+}
+
+.review-stars svg {
+  fill: var(--color-pikachu);
+  width: 20px;
+  height: 20px;
 }
 
 .review-text {
@@ -1436,15 +1614,17 @@ summary:focus-visible,
   font-size: 0.8125rem;
   color: var(--color-text-sub);
   padding-top: 12px;
-  border-top: 1px solid var(--color-accent);
+  border-top: 1px solid rgba(255, 203, 5, 0.3);
 }
 
 /* ==========================================================
-   15. Shop Guide (.shop)
+   15. SHOP GUIDE
    ========================================================== */
 .shop {
   padding: var(--section-gap) 0;
   background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
 }
 
 .shop-card {
@@ -1453,14 +1633,14 @@ summary:focus-visible,
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  border-left: 4px solid var(--color-primary);
+  border-left: 4px solid var(--color-pikachu);
   display: grid;
   grid-template-columns: 300px 1fr;
   transition: box-shadow var(--transition);
 }
 
 .shop-card:hover {
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pikachu);
 }
 
 .shop-card__img img {
@@ -1477,10 +1657,10 @@ summary:focus-visible,
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-dark);
   margin-bottom: 14px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom: 2px solid var(--color-pikachu-light);
 }
 
 .shop-card__info dl {
@@ -1502,12 +1682,13 @@ summary:focus-visible,
 }
 
 .shop-card__info dd a {
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
   transition: opacity var(--transition-fast);
 }
 
 .shop-card__info dd a:hover {
   opacity: 0.7;
+  color: var(--color-pikachu-dark);
 }
 
 .sns-icon {
@@ -1519,7 +1700,7 @@ summary:focus-visible,
 }
 
 /* ==========================================================
-   16. News (.news)
+   16. NEWS
    ========================================================== */
 .news {
   padding: var(--section-gap) 0;
@@ -1535,7 +1716,7 @@ summary:focus-visible,
 
 .blog_area li {
   padding: 20px 0;
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-pikachu-light);
   display: grid;
   grid-template-columns: 150px 1fr;
   gap: 20px;
@@ -1559,9 +1740,9 @@ summary:focus-visible,
   display: inline-block;
   font-size: 0.6875rem;
   padding: 3px 12px;
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
-  border-radius: var(--radius-sm);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
+  border-radius: var(--radius-full);
   font-weight: 600;
 }
 
@@ -1578,7 +1759,7 @@ summary:focus-visible,
 }
 
 .news-content h3 a:hover {
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
 }
 
 /* Sidebar */
@@ -1586,15 +1767,15 @@ summary:focus-visible,
   font-size: 1rem;
   font-weight: 700;
   padding: 12px 16px;
-  background: var(--color-secondary);
-  color: var(--color-text-inverse);
+  background: var(--color-dark);
+  color: var(--color-pikachu);
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
 }
 
 .side-links li {
   padding: 10px 0;
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-pikachu-light);
 }
 
 .side-links li a {
@@ -1611,21 +1792,23 @@ summary:focus-visible,
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  border-left: 6px solid var(--color-primary);
+  border-left: 6px solid var(--color-pikachu);
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
 }
 
 .side-links li a:hover {
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
 }
 
 /* ==========================================================
-   17. FAQ (.faq)
+   17. FAQ
    ========================================================== */
 .faq {
   padding: var(--section-gap) 0;
   background: var(--color-white);
+  position: relative;
+  overflow: hidden;
 }
 
 .faq-list {
@@ -1634,15 +1817,21 @@ summary:focus-visible,
 }
 
 .faq-item {
-  border: 1px solid var(--color-accent);
+  border: 1px solid var(--color-pikachu-light);
   border-radius: var(--radius-sm);
   margin-bottom: 12px;
   overflow: hidden;
-  transition: box-shadow var(--transition-fast);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
 .faq-item:hover {
   box-shadow: var(--shadow-sm);
+}
+
+/* Opened state: yellow left border */
+.faq-item[open] {
+  border-left: 4px solid var(--color-pikachu);
+  background: var(--color-pikachu-pale);
 }
 
 .faq-item summary {
@@ -1658,14 +1847,14 @@ summary:focus-visible,
 }
 
 .faq-item summary:hover {
-  background: var(--color-bg);
+  background: var(--color-pikachu-pale);
 }
 
 .faq-item summary::-webkit-details-marker {
   display: none;
 }
 
-/* Q badge */
+/* Q badge — pikachu yellow circle with dark Q */
 .faq-item summary::before {
   content: "Q";
   position: absolute;
@@ -1674,14 +1863,15 @@ summary:focus-visible,
   transform: translateY(-50%);
   width: 28px;
   height: 28px;
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-accent);
   font-size: 0.8125rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 /* +/- icon */
@@ -1692,7 +1882,7 @@ summary:focus-visible,
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.5rem;
-  color: var(--color-primary);
+  color: var(--color-pikachu-dark);
   transition: transform var(--transition);
   font-weight: 300;
   width: 24px;
@@ -1713,12 +1903,29 @@ summary:focus-visible,
 }
 
 /* ==========================================================
-   18. CONTACT (inquiry)
+   18. CONTACT SECTION
    ========================================================== */
 .contact {
   padding: var(--section-gap) 0;
   background: var(--color-bg-alt);
   position: relative;
+}
+
+/* Yellow accent header area */
+.contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, var(--color-pikachu-pale) 0%, var(--color-pikachu-light) 100%);
+  pointer-events: none;
+}
+
+.contact .wrapper {
+  position: relative;
+  z-index: var(--z-base);
 }
 
 .contact-grid {
@@ -1743,7 +1950,7 @@ summary:focus-visible,
 .contact-tel a {
   font-size: 2.5rem;
   font-weight: 900;
-  color: var(--color-primary);
+  color: var(--color-dark);
   letter-spacing: 0.05em;
   display: inline-block;
   transition: opacity var(--transition);
@@ -1751,7 +1958,7 @@ summary:focus-visible,
 
 .contact-tel a:hover {
   opacity: 0.8;
-  color: var(--color-primary);
+  color: var(--color-dark);
 }
 
 .contact-hours {
@@ -1766,7 +1973,7 @@ summary:focus-visible,
   background: var(--color-white);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-accent);
+  border: 2px solid var(--color-pikachu-light);
 }
 
 .contact-line h3 {
@@ -1782,6 +1989,7 @@ summary:focus-visible,
   padding: 40px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+  border: 2px solid var(--color-pikachu-light);
 }
 
 .contact-form h3 {
@@ -1805,7 +2013,7 @@ summary:focus-visible,
 }
 
 .required {
-  color: var(--color-error);
+  color: var(--color-red);
   font-size: 0.75rem;
   margin-left: 4px;
 }
@@ -1815,7 +2023,7 @@ summary:focus-visible,
 .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--color-pikachu-light);
   border-radius: var(--radius-sm);
   font-size: 0.9375rem;
   transition: border-color var(--transition), box-shadow var(--transition);
@@ -1824,12 +2032,12 @@ summary:focus-visible,
   color: var(--color-text);
 }
 
-/* [Fix #5] outline: none -> outline: 2px solid transparent (high-contrast mode support) */
+/* Focus state: yellow border + yellow glow */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(216,97,60,0.15);
+  border-color: var(--color-pikachu);
+  box-shadow: 0 0 0 3px rgba(255, 203, 5, 0.25);
   outline: 2px solid transparent;
 }
 
@@ -1848,6 +2056,7 @@ summary:focus-visible,
 
 .form-group--checkbox input[type="checkbox"] {
   width: auto;
+  accent-color: var(--color-pikachu);
 }
 
 .form-note {
@@ -1856,7 +2065,7 @@ summary:focus-visible,
   margin-bottom: 16px;
 }
 
-/* [Fix #6] Form validation: .is-invalid + aria-invalid styles */
+/* Form validation */
 .form-group.is-invalid input,
 .form-group.is-invalid select,
 .form-group.is-invalid textarea,
@@ -1864,7 +2073,7 @@ input[aria-invalid="true"],
 select[aria-invalid="true"],
 textarea[aria-invalid="true"] {
   border-color: var(--color-error);
-  box-shadow: 0 0 0 3px rgba(220,53,69,0.15);
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
 }
 
 .form-group.is-invalid input:focus,
@@ -1874,7 +2083,7 @@ input[aria-invalid="true"]:focus,
 select[aria-invalid="true"]:focus,
 textarea[aria-invalid="true"]:focus {
   border-color: var(--color-error);
-  box-shadow: 0 0 0 3px rgba(220,53,69,0.25);
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
   outline: 2px solid transparent;
 }
 
@@ -1890,13 +2099,25 @@ textarea[aria-invalid="true"]:focus {
    ========================================================== */
 .site-footer,
 footer {
-  background: var(--color-bg-dark);
-  color: var(--color-accent);
-  padding-top: 56px;
+  background: var(--color-dark);
+  color: rgba(255, 255, 255, 0.75);
+  padding-top: 0;
+  position: relative;
+}
+
+/* Yellow top stripe */
+.site-footer::before,
+footer::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-pikachu), var(--color-pikachu-dark), var(--color-pikachu));
 }
 
 .site-footer .wrapper,
 footer .wrapper {
+  padding-top: 56px;
   padding-bottom: 40px;
   display: flex;
   justify-content: space-between;
@@ -1920,7 +2141,7 @@ footer .wrapper {
 .footer-address {
   font-size: 0.75rem;
   line-height: 1.8;
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .footer-address dl {
@@ -1931,7 +2152,7 @@ footer .wrapper {
 
 .footer-address dt {
   font-weight: 700;
-  color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .footer-address dd {
@@ -1941,13 +2162,13 @@ footer .wrapper {
 .footer-license {
   margin-top: 12px;
   font-size: 0.6875rem;
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .footer-company {
   margin-top: 16px;
   font-size: 0.75rem;
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.6);
   line-height: 1.8;
 }
 
@@ -1959,7 +2180,7 @@ footer .wrapper {
 
 .footer-company dt {
   font-weight: 700;
-  color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .footer-company dd {
@@ -1977,7 +2198,7 @@ footer .wrapper {
 
 .f_nav ul li a {
   font-size: 0.8125rem;
-  color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.7);
   padding-left: 16px;
   position: relative;
   transition: color var(--transition-fast);
@@ -1989,28 +2210,57 @@ footer .wrapper {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  border-left: 6px solid var(--color-primary);
+  border-left: 6px solid var(--color-pikachu);
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
 }
 
 .f_nav ul li a:hover {
-  color: var(--color-text-inverse);
+  color: var(--color-pikachu);
+}
+
+/* Footer social links */
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.footer-social a:hover {
+  background: var(--color-pikachu);
+  color: var(--color-dark);
+}
+
+.footer-social a svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
 /* Copyright bar */
 .copyright {
-  background: var(--color-primary);
+  background: var(--color-dark-secondary);
   text-align: center;
   padding: 10px 0;
-  color: var(--color-text-inverse);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.75rem;
 }
 
 /* ==========================================================
    20. SP FLOATING BAR
    ========================================================== */
-/* [Fix #3] padding-bottom: env(safe-area-inset-bottom) added */
 .sp-floating {
   position: fixed;
   bottom: 0;
@@ -2018,7 +2268,7 @@ footer .wrapper {
   width: 100%;
   z-index: var(--z-floating);
   height: 64px;
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
   padding-bottom: env(safe-area-inset-bottom);
 }
 
@@ -2051,32 +2301,36 @@ footer .wrapper {
   transition: opacity var(--transition-fast);
 }
 
+/* 電話 button: dark background with yellow text/icon */
 .sp-float-tel a {
-  background: var(--color-primary);
-}
-
-.sp-float-form a {
-  background: var(--color-pikachu-yellow);
-  color: var(--color-bg-dark);
+  background: var(--color-dark);
+  color: var(--color-pikachu);
 }
 
 .sp-float-tel a:hover {
-  background: var(--color-primary-dark);
-  color: var(--color-text-inverse);
+  background: var(--color-dark-secondary);
+  color: var(--color-pikachu);
+}
+
+/* 査定 button: pikachu yellow background, dark text */
+.sp-float-form a {
+  background: var(--color-pikachu);
+  color: var(--color-dark);
 }
 
 .sp-float-form a:hover {
-  background: var(--color-pikachu-yellow-dark);
-  color: var(--color-bg-dark);
+  background: var(--color-pikachu-dark);
+  color: var(--color-dark);
 }
 
 .sp-float-top a {
-  background: var(--color-secondary);
+  background: var(--color-pikachu-light);
+  color: var(--color-dark);
 }
 
 .sp-float-top a:hover {
-  background: var(--color-secondary-light);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
 }
 
 /* ==========================================================
@@ -2086,7 +2340,7 @@ footer .wrapper {
   position: fixed;
   bottom: 50px;
   right: 30px;
-  z-index: var(--z-fixed);
+  z-index: var(--z-floating);
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--transition), visibility var(--transition), transform var(--transition);
@@ -2103,38 +2357,154 @@ footer .wrapper {
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu);
+  color: var(--color-dark);
   border-radius: 50%;
   font-size: 0.6875rem;
   font-weight: 700;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pikachu);
   transition: background-color var(--transition), transform var(--transition);
 }
 
 #pageTop a:hover {
-  background: var(--color-primary-dark);
-  color: var(--color-text-inverse);
+  background: var(--color-pikachu-dark);
+  color: var(--color-dark);
   transform: translateY(-3px);
 }
 
 /* ==========================================================
-   21.5 SCROLL PROGRESS BAR
+   21.5. SCROLL PROGRESS BAR
    ========================================================== */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   height: 3px;
-  background: var(--color-pikachu-yellow);
-  z-index: var(--z-floating, 500);
+  background: var(--color-pikachu);
+  z-index: calc(var(--z-modal) + 1);
   transition: width 0.1s linear;
   pointer-events: none;
 }
 
 /* ==========================================================
-   22. ANIMATIONS
+   22. POKEBALL DECORATIONS
    ========================================================== */
+.deco-pokeball {
+  position: absolute;
+  opacity: 0.06;
+  z-index: -1;
+  pointer-events: none;
+  animation: spin 30s linear infinite;
+}
+
+.deco-pokeball svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--color-pikachu);
+}
+
+.deco-pokeball--sm {
+  width: 60px;
+  height: 60px;
+  opacity: 0.05;
+}
+
+.deco-pokeball--md {
+  width: 120px;
+  height: 120px;
+  opacity: 0.06;
+}
+
+.deco-pokeball--lg {
+  width: 200px;
+  height: 200px;
+  opacity: 0.08;
+}
+
+/* Deco Pokeball positioning */
+.deco-pokeball--right {
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.deco-pokeball--left {
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.deco-pokeball--bottom {
+  top: auto;
+  bottom: 40px;
+  transform: none;
+}
+
+/* Section tag light variant (for dark backgrounds) */
+.section-tag--light {
+  color: var(--color-pikachu-light);
+}
+
+/* Badge pokeball icon */
+.badge-pokeball {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-pikachu-dark);
+  margin-right: 4px;
+}
+
+/* Footer yellow stripe (explicit div alternative) */
+.footer-yellow-stripe {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-pikachu), var(--color-pikachu-dark), var(--color-pikachu));
+}
+
+/* ==========================================================
+   23. ANIMATIONS
+   ========================================================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-ring {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Fade-in on scroll */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
@@ -2153,8 +2523,7 @@ footer .wrapper {
 .fade-in:nth-child(6) { transition-delay: 0.5s; }
 
 /* ==========================================================
-   23. REDUCED MOTION
-   [Fix #8] prefers-reduced-motion support
+   24. REDUCED MOTION
    ========================================================== */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -2165,10 +2534,25 @@ footer .wrapper {
     transition-duration: 0.01ms;
     scroll-behavior: auto;
   }
+
+  .sparkle,
+  .deco-pokeball,
+  .scroll-indicator,
+  .hero-visual-left,
+  .hero-visual-right,
+  .hero-ninnin,
+  .hero-pikachu-mini {
+    animation: none;
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ==========================================================
-   24. RESPONSIVE: Tablet (max-width: 1024px)
+   25. RESPONSIVE: Tablet (max-width: 1024px)
    ========================================================== */
 @media (max-width: 1024px) {
   :root {
@@ -2213,15 +2597,14 @@ footer .wrapper {
     gap: 32px;
   }
 
-  /* [Fix #15] About: keep 2-column on tablet */
-  .about-bg .wrapper {
-    grid-template-columns: 1fr 1fr;
+  /* About: keep 2-column on tablet */
+  .about-columns {
     gap: 32px;
   }
 }
 
 /* ==========================================================
-   25. RESPONSIVE: SP (max-width: 768px)
+   26. RESPONSIVE: SP (max-width: 768px)
    ========================================================== */
 @media (max-width: 768px) {
   :root {
@@ -2247,6 +2630,18 @@ footer .wrapper {
     width: 220px;
     order: -1;
     margin-bottom: 16px;
+  }
+
+  .hero-visual-left {
+    width: 80px;
+    left: -20px;
+    bottom: -20px;
+  }
+
+  .hero-visual-right {
+    width: 100px;
+    right: -20px;
+    bottom: -10px;
   }
 
   .hero-pikachu-mini {
@@ -2275,13 +2670,23 @@ footer .wrapper {
     gap: 12px;
   }
 
-  /* Service: 1 column stack on SP */
+  .badge {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    font-size: 0.75rem;
+  }
+
+  /* Service: 1 column stack */
   .service-cards {
     display: flex;
     flex-direction: column;
     gap: 16px;
     grid-template-columns: none;
   }
+
   .service-card {
     width: 100%;
     max-width: 100%;
@@ -2307,12 +2712,18 @@ footer .wrapper {
     line-height: 1.6;
   }
 
+  .service-num {
+    font-size: 2rem;
+    top: 8px;
+    right: 12px;
+  }
+
   .cta-small {
     padding: 8px 16px;
     font-size: 0.8rem;
   }
 
-  /* About: compact on SP */
+  /* About: single column, hide character image */
   .about-bg {
     min-height: auto;
   }
@@ -2365,18 +2776,21 @@ footer .wrapper {
     padding-bottom: 12px;
     -webkit-overflow-scrolling: touch;
   }
+
   .price-grid::-webkit-scrollbar { display: none; }
+
   .price-card {
     min-width: 60%;
     scroll-snap-align: center;
     flex-shrink: 0;
   }
 
-  /* Delivery purchase: 1 column + compact images */
+  /* Delivery purchase: 1 column */
   .takuhai-content {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+
   .takuhai-left img,
   .takuhai-right img {
     max-height: 200px;
@@ -2391,14 +2805,16 @@ footer .wrapper {
     gap: 16px;
     -webkit-overflow-scrolling: touch;
   }
+
   .step-flow::-webkit-scrollbar { display: none; }
+
   .step-item {
     min-width: 70%;
     scroll-snap-align: center;
     flex-shrink: 0;
   }
 
-  /* Category: compact grid */
+  /* Category: smaller items */
   .category-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 8px;
@@ -2413,7 +2829,7 @@ footer .wrapper {
     padding: 8px 4px;
   }
 
-  /* Shop: horizontal scroll snap */
+  /* Shop cards: horizontal scroll */
   .shop-grid {
     display: flex;
     overflow-x: auto;
@@ -2422,7 +2838,9 @@ footer .wrapper {
     padding-bottom: 12px;
     -webkit-overflow-scrolling: touch;
   }
+
   .shop-grid::-webkit-scrollbar { display: none; }
+
   .shop-card {
     min-width: 85%;
     scroll-snap-align: center;
@@ -2443,6 +2861,7 @@ footer .wrapper {
   .news-side {
     display: none;
   }
+
   .news-area {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -2457,7 +2876,7 @@ footer .wrapper {
     height: 160px;
   }
 
-  /* Reviews: horizontal scroll snap */
+  /* Reviews: horizontal scroll */
   .review-cards {
     grid-template-columns: 1fr;
     display: flex;
@@ -2479,16 +2898,19 @@ footer .wrapper {
     padding: 12px 40px 12px 48px;
     font-size: 0.875rem;
   }
+
   .faq-item summary::before {
     left: 12px;
     width: 26px;
     height: 26px;
     font-size: 0.75rem;
   }
+
   .faq-item summary::after {
     right: 12px;
     font-size: 1.25rem;
   }
+
   .faq-item p {
     padding: 0 16px 16px 48px;
   }
@@ -2507,7 +2929,7 @@ footer .wrapper {
     font-size: 1.75rem;
   }
 
-  /* Footer */
+  /* Footer: 2 column grid nav */
   .site-footer .wrapper,
   footer .wrapper {
     flex-direction: column;
@@ -2557,20 +2979,24 @@ footer .wrapper {
     padding-left: 12px;
   }
 
+  .footer-social {
+    justify-content: center;
+  }
+
   /* Footer bar space */
   .site-footer,
   footer {
     margin-bottom: 64px;
   }
 
-  /* SP Header inside unified header */
+  /* SP Header: fixed, auto-hide on scroll down */
   .site-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(255,255,255,0.97);
-    border-bottom: 1px solid var(--color-accent);
+    background: rgba(255, 253, 245, 0.97);
+    border-bottom: 2px solid var(--color-pikachu-light);
     transition: transform 0.3s ease;
   }
 
@@ -2601,16 +3027,14 @@ footer .wrapper {
     bottom: 80px;
   }
 
-  /* Wave separators: hide on SP to avoid layout issues */
-  .service::after,
-  .about::after,
-  .reviews::after {
+  /* Pokeball decorations: hide on SP */
+  .deco-pokeball {
     display: none;
   }
 }
 
 /* ==========================================================
-   26. RESPONSIVE: Small SP (max-width: 480px)
+   27. RESPONSIVE: Small SP (max-width: 480px)
    ========================================================== */
 @media (max-width: 480px) {
   /* Hero */
@@ -2631,11 +3055,9 @@ footer .wrapper {
     gap: 16px;
   }
 
-  /* Price: keep horizontal scroll from 768px, no override needed */
-
-  /* Category: keep compact grid from 768px */
-
-  /* Trust badges: keep 2x2 grid from 768px */
+  .sparkle {
+    display: none;
+  }
 
   /* CTA button shrink */
   .cta-primary {
@@ -2671,15 +3093,24 @@ footer .wrapper {
   .review-card {
     min-width: 92%;
   }
+
+  /* Price cards wider on small screens */
+  .price-card {
+    min-width: 75%;
+  }
 }
 
 /* ==========================================================
-   27. PRINT STYLES
+   28. PRINT STYLES
    ========================================================== */
 @media print {
   .hero,
   .sp-floating,
-  .site-header {
+  .site-header,
+  .scroll-progress,
+  .deco-pokeball,
+  .sparkle,
+  .scroll-indicator {
     display: none;
   }
 
@@ -2701,5 +3132,9 @@ footer .wrapper {
 
   .contact {
     background: #eee;
+  }
+
+  .contact::before {
+    display: none;
   }
 }

@@ -2,6 +2,7 @@
  * ポケカ専門店ニンニン - Main JavaScript
  * Vanilla ES6+ / jQuery不使用
  * パフォーマンス最優先 / アクセシビリティ対応
+ * "Maximum POP" enhanced edition
  */
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
@@ -43,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /** SP判定用 matchMedia */
   const spMediaQuery = window.matchMedia("(max-width: 768px)");
+
+  /** アクセシビリティ: prefers-reduced-motion 判定 */
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   // ══════════════════════════════════════════
   //  1. SP ハンバーガーメニュー (with focus trap)
@@ -237,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  5. スクロールプログレスバー [NEW]
+  //  5. スクロールプログレスバー
   // ══════════════════════════════════════════
 
   const progressBar = document.querySelector(".scroll-progress");
@@ -258,21 +262,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const fadeElements = document.querySelectorAll(".fade-in");
 
   if (fadeElements.length) {
-    const fadeObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            fadeObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+    // reduced-motion時はフェードインをスキップして即座に表示
+    if (prefersReducedMotion.matches) {
+      fadeElements.forEach((el) => el.classList.add("is-visible"));
+    } else {
+      const fadeObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              fadeObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
 
-    fadeElements.forEach((el) => {
-      fadeObserver.observe(el);
-    });
+      fadeElements.forEach((el) => {
+        fadeObserver.observe(el);
+      });
+    }
   }
 
   // ══════════════════════════════════════════
@@ -317,6 +326,12 @@ document.addEventListener("DOMContentLoaded", () => {
      * 画面外に出たら経過時間を一時停止する
      */
     const animateCount = (el, target, suffix, hasComma, duration = 2000) => {
+      // reduced-motion時は即座に最終値を表示
+      if (prefersReducedMotion.matches) {
+        el.textContent = formatNumber(target, hasComma) + suffix;
+        return;
+      }
+
       let elapsed = 0;
       let lastFrameTime = null;
       let isPaused = false;
@@ -426,7 +441,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const wrapper = document.createElement("div");
       wrapper.className = "faq-content-wrapper";
       wrapper.style.overflow = "hidden";
-      wrapper.style.transition = "max-height 0.3s ease, opacity 0.3s ease";
+      wrapper.style.transition = prefersReducedMotion.matches
+        ? "none"
+        : "max-height 0.3s ease, opacity 0.3s ease";
       wrapper.style.maxHeight = details.open ? "none" : "0";
       wrapper.style.opacity = details.open ? "1" : "0";
       contentNodes.forEach((node) => wrapper.appendChild(node));
@@ -444,6 +461,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (details.open) {
           // ── 閉じるアニメーション ──
           summary.setAttribute("aria-expanded", "false");
+
+          if (prefersReducedMotion.matches) {
+            wrapper.style.maxHeight = "0";
+            wrapper.style.opacity = "0";
+            details.removeAttribute("open");
+            isAnimating = false;
+            return;
+          }
+
           wrapper.style.maxHeight = wrapper.scrollHeight + "px";
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -461,6 +487,14 @@ document.addEventListener("DOMContentLoaded", () => {
           // ── 開くアニメーション ──
           details.setAttribute("open", "");
           summary.setAttribute("aria-expanded", "true");
+
+          if (prefersReducedMotion.matches) {
+            wrapper.style.maxHeight = "none";
+            wrapper.style.opacity = "1";
+            isAnimating = false;
+            return;
+          }
+
           const height = wrapper.scrollHeight;
           wrapper.style.maxHeight = "0";
           wrapper.style.opacity = "0";
@@ -768,12 +802,12 @@ document.addEventListener("DOMContentLoaded", () => {
       let ticking = false;
 
       card.addEventListener("mouseenter", () => {
-        if (isTouchDevice()) return;
+        if (isTouchDevice() || prefersReducedMotion.matches) return;
         card.style.willChange = "transform";
       });
 
       card.addEventListener("mousemove", (e) => {
-        if (isTouchDevice()) return;
+        if (isTouchDevice() || prefersReducedMotion.matches) return;
 
         if (!ticking) {
           requestAnimationFrame(() => {
@@ -802,5 +836,376 @@ document.addEventListener("DOMContentLoaded", () => {
         ticking = false;
       });
     });
+  }
+
+  // ══════════════════════════════════════════
+  //  12. [REMOVED - placeholder for numbering alignment]
+  //      Original features 1-11 preserved above.
+  //      New features 13-17 begin below.
+  // ══════════════════════════════════════════
+
+  // ══════════════════════════════════════════
+  //  13. SPARKLE EFFECT - ヒーローセクション キラキラ
+  //      ランダムに星パーティクルを生成し、CSSアニメで表示→フェードアウト→除去
+  //      一度に5~8個のみ。throttleで生成頻度を制限。
+  //      prefers-reduced-motion 時はスキップ。
+  // ══════════════════════════════════════════
+
+  const heroSection = document.querySelector(".hero");
+
+  if (heroSection && !prefersReducedMotion.matches) {
+    // スパークル用CSSをインジェクト（軽量キーフレーム）
+    const sparkleStyle = document.createElement("style");
+    sparkleStyle.textContent = `
+      .sparkle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        pointer-events: none;
+        z-index: 5;
+        animation: sparkle-pop 0.8s ease-out forwards;
+      }
+      .sparkle::before,
+      .sparkle::after {
+        content: "";
+        position: absolute;
+        background: #FFCB05;
+      }
+      .sparkle::before {
+        width: 100%;
+        height: 2px;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        border-radius: 1px;
+      }
+      .sparkle::after {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        border-radius: 1px;
+      }
+      .sparkle--large {
+        width: 12px;
+        height: 12px;
+      }
+      .sparkle--white::before,
+      .sparkle--white::after {
+        background: #fff;
+      }
+      @keyframes sparkle-pop {
+        0% {
+          opacity: 0;
+          transform: scale(0) rotate(0deg);
+        }
+        30% {
+          opacity: 1;
+          transform: scale(1.2) rotate(20deg);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.5) rotate(45deg);
+        }
+      }
+    `;
+    document.head.appendChild(sparkleStyle);
+
+    // heroセクションをposition:relativeにする（パーティクル配置のため）
+    const heroComputedPos = getComputedStyle(heroSection).position;
+    if (heroComputedPos === "static") {
+      heroSection.style.position = "relative";
+    }
+    heroSection.style.overflow = "hidden";
+
+    /** 現在のスパークル数 */
+    let activeSparkles = 0;
+    const MAX_SPARKLES = 8;
+
+    /** 単一スパークルを生成 */
+    const createSparkle = () => {
+      if (activeSparkles >= MAX_SPARKLES) return;
+
+      const sparkle = document.createElement("span");
+      sparkle.className = "sparkle";
+      sparkle.setAttribute("aria-hidden", "true");
+
+      // ランダムなバリエーション
+      if (Math.random() > 0.5) sparkle.classList.add("sparkle--large");
+      if (Math.random() > 0.6) sparkle.classList.add("sparkle--white");
+
+      // ランダム位置（ヒーロー内）
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      sparkle.style.left = x + "%";
+      sparkle.style.top = y + "%";
+
+      // アニメーション時間をランダムに少しばらつかせる
+      const duration = 0.6 + Math.random() * 0.5;
+      sparkle.style.animationDuration = duration + "s";
+
+      heroSection.appendChild(sparkle);
+      activeSparkles++;
+
+      // アニメーション終了で自動削除
+      sparkle.addEventListener("animationend", () => {
+        sparkle.remove();
+        activeSparkles--;
+      }, { once: true });
+    };
+
+    /** バッチでスパークルを生成（5~8個） */
+    const spawnSparkles = () => {
+      const count = 5 + Math.floor(Math.random() * 4); // 5~8
+      for (let i = 0; i < count; i++) {
+        // 少し時差をつけて生成
+        setTimeout(createSparkle, i * 80);
+      }
+    };
+
+    // IntersectionObserverでheroが画面内のときだけスパークルを出す
+    let sparkleInterval = null;
+
+    const sparkleObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 初回即生成 + インターバル
+            spawnSparkles();
+            sparkleInterval = setInterval(spawnSparkles, 2000);
+          } else {
+            if (sparkleInterval) {
+              clearInterval(sparkleInterval);
+              sparkleInterval = null;
+            }
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    sparkleObserver.observe(heroSection);
+  }
+
+  // ══════════════════════════════════════════
+  //  14. SCROLL-TRIGGERED SECTION TAGS - タイプライター効果
+  //      .section-tag 要素が画面内に入ったとき、
+  //      文字を1文字ずつ遅延付きで表示する。
+  //      prefers-reduced-motion 時はスキップ（即座に全文表示）。
+  // ══════════════════════════════════════════
+
+  const sectionTags = document.querySelectorAll(".section-tag");
+
+  if (sectionTags.length) {
+    // タイプライター用CSS
+    const typewriterStyle = document.createElement("style");
+    typewriterStyle.textContent = `
+      .section-tag--typewriter .section-tag__char {
+        opacity: 0;
+        display: inline-block;
+        transition: opacity 0.15s ease;
+      }
+      .section-tag--typewriter .section-tag__char.is-revealed {
+        opacity: 1;
+      }
+      .section-tag--typewriter .section-tag__cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: currentColor;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        animation: typewriter-blink 0.6s step-end infinite;
+      }
+      .section-tag--typewriter .section-tag__cursor.is-done {
+        animation: typewriter-blink-out 0.6s step-end forwards;
+      }
+      @keyframes typewriter-blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+      @keyframes typewriter-blink-out {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(typewriterStyle);
+
+    if (prefersReducedMotion.matches) {
+      // reduced-motion: 即座に表示（何も変更しない）
+    } else {
+      sectionTags.forEach((tag) => {
+        const originalText = tag.textContent;
+        tag.textContent = "";
+        tag.classList.add("section-tag--typewriter");
+
+        // テキストを1文字ずつspan化
+        const chars = [];
+        for (const char of originalText) {
+          const span = document.createElement("span");
+          span.className = "section-tag__char";
+          span.textContent = char;
+          tag.appendChild(span);
+          chars.push(span);
+        }
+
+        // カーソルを追加
+        const cursor = document.createElement("span");
+        cursor.className = "section-tag__cursor";
+        cursor.setAttribute("aria-hidden", "true");
+        tag.appendChild(cursor);
+
+        // IntersectionObserverでビューポート進入時にタイプライター開始
+        const tagObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                tagObserver.unobserve(entry.target);
+
+                // 文字を順に表示
+                chars.forEach((charSpan, i) => {
+                  setTimeout(() => {
+                    requestAnimationFrame(() => {
+                      charSpan.classList.add("is-revealed");
+                    });
+                  }, i * 50); // 50msずつ遅延
+                });
+
+                // 全文字表示後、カーソルをフェードアウト
+                setTimeout(() => {
+                  cursor.classList.add("is-done");
+                }, chars.length * 50 + 600);
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+
+        tagObserver.observe(tag);
+      });
+    }
+  }
+
+  // ══════════════════════════════════════════
+  //  15. HOLO SHINE ON SCROLL - ホログラフィックシャイン
+  //      .price-card 要素上でマウスホバー時、
+  //      マウスX位置に基づいてCSS custom property --shine-x を更新。
+  //      CSSグラデーション等で輝きに利用可能。
+  //      requestAnimationFrame で視覚更新をバッチ処理。
+  // ══════════════════════════════════════════
+
+  if (priceCards.length && !prefersReducedMotion.matches) {
+    // タッチデバイスではスキップ
+    const isTouchDevice = () =>
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    priceCards.forEach((card) => {
+      let shineRafPending = false;
+
+      card.addEventListener("mousemove", (e) => {
+        if (isTouchDevice()) return;
+
+        if (!shineRafPending) {
+          requestAnimationFrame(() => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            // 0~100% の範囲で --shine-x を設定
+            const percent = Math.round((x / rect.width) * 100);
+            card.style.setProperty("--shine-x", percent + "%");
+            shineRafPending = false;
+          });
+          shineRafPending = true;
+        }
+      }, { passive: true });
+
+      card.addEventListener("mouseleave", () => {
+        // リセット: 中央に戻す
+        card.style.setProperty("--shine-x", "50%");
+      });
+
+      // 初期値を設定
+      card.style.setProperty("--shine-x", "50%");
+    });
+  }
+
+  // ══════════════════════════════════════════
+  //  16. POKEBALL SPIN ON SCROLL - モンスターボール回転
+  //      .deco-pokeball 要素がビューポート内にあるとき回転クラスを付与。
+  //      IntersectionObserver を使用。
+  //      prefers-reduced-motion 時はスキップ。
+  // ══════════════════════════════════════════
+
+  const decoPokeballs = document.querySelectorAll(".deco-pokeball");
+
+  if (decoPokeballs.length && !prefersReducedMotion.matches) {
+    // 回転アニメーション用CSS
+    const pokeballStyle = document.createElement("style");
+    pokeballStyle.textContent = `
+      .deco-pokeball--spinning {
+        animation: pokeball-spin 8s linear infinite;
+      }
+      @keyframes pokeball-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(pokeballStyle);
+
+    const pokeballObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("deco-pokeball--spinning");
+          } else {
+            entry.target.classList.remove("deco-pokeball--spinning");
+          }
+        });
+      },
+      { threshold: 0.0 }
+    );
+
+    decoPokeballs.forEach((ball) => {
+      pokeballObserver.observe(ball);
+    });
+  }
+
+  // ══════════════════════════════════════════
+  //  17. SCROLL INDICATOR HIDE
+  //      ユーザーが200pxスクロールしたら .scroll-indicator をフェードアウト。
+  //      throttle で負荷軽減。
+  // ══════════════════════════════════════════
+
+  const scrollIndicator = document.querySelector(".scroll-indicator");
+
+  if (scrollIndicator) {
+    // フェードアウト用CSS
+    const indicatorStyle = document.createElement("style");
+    indicatorStyle.textContent = `
+      .scroll-indicator {
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+      .scroll-indicator.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    `;
+    document.head.appendChild(indicatorStyle);
+
+    const handleScrollIndicator = () => {
+      if (window.scrollY > 200) {
+        scrollIndicator.classList.add("is-hidden");
+      } else {
+        scrollIndicator.classList.remove("is-hidden");
+      }
+    };
+
+    window.addEventListener("scroll", throttle(handleScrollIndicator, 100), {
+      passive: true,
+    });
+
+    // 初期状態を反映
+    handleScrollIndicator();
   }
 });
