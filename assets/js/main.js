@@ -41,14 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   };
 
+  /** SP判定用 matchMedia */
+  const spMediaQuery = window.matchMedia("(max-width: 768px)");
+
   // ══════════════════════════════════════════
-  //  1. SP ハンバーガーメニュー (.drop_btn + .drop_menu)
+  //  1. SP ハンバーガーメニュー (with focus trap)
   // ══════════════════════════════════════════
 
   const dropBtn = document.querySelector(".drop_btn");
   const dropMenu = document.querySelector(".drop_menu");
 
   if (dropBtn && dropMenu) {
+    /** メニュー内のフォーカス可能なリンク一覧を取得 */
+    const getFocusableElements = () => {
+      return [
+        dropBtn,
+        ...dropMenu.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])')
+      ];
+    };
+
     /** メニューを閉じる共通処理 */
     const closeMenu = () => {
       dropBtn.classList.remove("active");
@@ -63,6 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
       dropMenu.classList.add("is-open");
       dropBtn.setAttribute("aria-expanded", "true");
       dropMenu.setAttribute("aria-hidden", "false");
+      // 開いた直後にメニュー内の最初のリンクへフォーカス
+      const firstLink = dropMenu.querySelector("a");
+      if (firstLink) {
+        firstLink.focus();
+      }
     };
 
     /** メニューが開いているか判定 */
@@ -82,11 +98,38 @@ document.addEventListener("DOMContentLoaded", () => {
       link.addEventListener("click", closeMenu);
     });
 
-    // ESCキーで閉じる
+    // キーボードイベント: ESCで閉じる + フォーカストラップ
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && isMenuOpen()) {
+      if (!isMenuOpen()) return;
+
+      // ESCキーで閉じる
+      if (e.key === "Escape") {
         closeMenu();
         dropBtn.focus();
+        return;
+      }
+
+      // フォーカストラップ: Tab / Shift+Tab
+      if (e.key === "Tab") {
+        const focusable = getFocusableElements();
+        if (focusable.length === 0) return;
+
+        const firstEl = focusable[0];
+        const lastEl = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          // Shift+Tab: 最初の要素にいたら最後へ
+          if (document.activeElement === firstEl) {
+            e.preventDefault();
+            lastEl.focus();
+          }
+        } else {
+          // Tab: 最後の要素にいたら最初へ
+          if (document.activeElement === lastEl) {
+            e.preventDefault();
+            firstEl.focus();
+          }
+        }
       }
     });
 
@@ -116,8 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector(href);
     if (target) {
       e.preventDefault();
-      const siteHeader = document.querySelector(".site-header");
-      const headerHeight = siteHeader ? siteHeader.offsetHeight : 0;
+      const siteHeaderEl = document.querySelector(".site-header");
+      const headerHeight = siteHeaderEl ? siteHeaderEl.offsetHeight : 0;
       const topPos =
         target.getBoundingClientRect().top +
         window.scrollY -
@@ -171,7 +214,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  5. スクロールフェードインアニメーション (IntersectionObserver)
+  //  5. スクロールプログレスバー [NEW]
+  // ══════════════════════════════════════════
+
+  const progressBar = document.querySelector(".scroll-progress");
+
+  if (progressBar) {
+    window.addEventListener("scroll", throttle(() => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = scrollPercent + "%";
+    }, 16), { passive: true });
+  }
+
+  // ══════════════════════════════════════════
+  //  6. スクロールフェードインアニメーション (IntersectionObserver)
   // ══════════════════════════════════════════
 
   const fadeElements = document.querySelectorAll(".fade-in");
@@ -195,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  6. 統計カウントアップ (.stat-num)
+  //  7. 統計カウントアップ (.stat-num) - 画面外一時停止対応
   // ══════════════════════════════════════════
 
   const statNums = document.querySelectorAll(".stat-num");
@@ -230,12 +288,44 @@ document.addEventListener("DOMContentLoaded", () => {
     /** イージング関数 (ease-out cubic) */
     const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
-    /** カウントアップアニメーション */
+    /**
+     * カウントアップアニメーション（画面外一時停止対応）
+     * IntersectionObserverで要素が画面内にあるかを監視し、
+     * 画面外に出たら経過時間を一時停止する
+     */
     const animateCount = (el, target, suffix, hasComma, duration = 2000) => {
-      const startTime = performance.now();
+      let elapsed = 0;
+      let lastFrameTime = null;
+      let isPaused = false;
+      let animDone = false;
+
+      // 画面内/外の監視用Observer
+      const visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              isPaused = false;
+              lastFrameTime = performance.now();
+              if (!animDone) {
+                requestAnimationFrame(update);
+              }
+            } else {
+              isPaused = true;
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      visibilityObserver.observe(el);
 
       const update = (currentTime) => {
-        const elapsed = currentTime - startTime;
+        if (isPaused || animDone) return;
+
+        if (lastFrameTime !== null) {
+          elapsed += currentTime - lastFrameTime;
+        }
+        lastFrameTime = currentTime;
+
         const progress = Math.min(elapsed / duration, 1);
         const easedProgress = easeOutCubic(progress);
         const currentValue = Math.round(easedProgress * target);
@@ -244,9 +334,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (progress < 1) {
           requestAnimationFrame(update);
+        } else {
+          animDone = true;
+          visibilityObserver.unobserve(el);
         }
       };
 
+      // 初回開始（既に画面内にいるはず）
+      lastFrameTime = performance.now();
       requestAnimationFrame(update);
     };
 
@@ -275,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  7. FAQ アコーディオンアニメーション (details/summary)
+  //  8. FAQ アコーディオンアニメーション (details/summary) + aria-expanded同期
   // ══════════════════════════════════════════
 
   const faqItems = document.querySelectorAll(".faq-item");
@@ -284,6 +379,9 @@ document.addEventListener("DOMContentLoaded", () => {
     faqItems.forEach((details) => {
       const summary = details.querySelector("summary");
       if (!summary) return;
+
+      // aria-expanded 初期値をセット
+      summary.setAttribute("aria-expanded", details.open ? "true" : "false");
 
       // summary 以外のコンテンツをラッパーで囲む
       const contentNodes = [];
@@ -306,8 +404,8 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.className = "faq-content-wrapper";
       wrapper.style.overflow = "hidden";
       wrapper.style.transition = "max-height 0.3s ease, opacity 0.3s ease";
-      wrapper.style.maxHeight = "0";
-      wrapper.style.opacity = "0";
+      wrapper.style.maxHeight = details.open ? "none" : "0";
+      wrapper.style.opacity = details.open ? "1" : "0";
       contentNodes.forEach((node) => wrapper.appendChild(node));
       details.appendChild(wrapper);
 
@@ -322,6 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (details.open) {
           // ── 閉じるアニメーション ──
+          summary.setAttribute("aria-expanded", "false");
           wrapper.style.maxHeight = wrapper.scrollHeight + "px";
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -338,6 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           // ── 開くアニメーション ──
           details.setAttribute("open", "");
+          summary.setAttribute("aria-expanded", "true");
           const height = wrapper.scrollHeight;
           wrapper.style.maxHeight = "0";
           wrapper.style.opacity = "0";
@@ -359,7 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  8. フォームバリデーション (#contact form)
+  //  9. フォームバリデーション (#contact form)
   // ══════════════════════════════════════════
 
   const contactSection = document.getElementById("contact");
@@ -371,24 +471,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const phoneRegex = /^[0-9\-]{10,13}$/;
 
     /**
-     * エラーメッセージを表示
+     * エラーメッセージを表示（インラインスタイル不使用・CSSクラスのみ）
      * @param {HTMLElement} field - 対象のフォームフィールド
      * @param {string} message - エラーメッセージ
      */
     const showError = (field, message) => {
-      const formGroup = field.closest(".form-group");
-      if (!formGroup) return;
+      const group = field.closest(".form-group");
+      if (!group) return;
 
-      // 既存のエラーメッセージを除去
-      const existing = formGroup.querySelector(".error-message");
-      if (existing) existing.remove();
+      // 既存のエラーをクリア
+      clearError(field);
 
-      formGroup.classList.add("is-invalid");
+      group.classList.add("is-invalid");
+      field.setAttribute("aria-invalid", "true");
 
       const errorEl = document.createElement("span");
       errorEl.className = "error-message";
+      errorEl.id = `error-${field.name}`;
       errorEl.textContent = message;
-      field.parentNode.insertBefore(errorEl, field.nextSibling);
+      errorEl.setAttribute("role", "alert");
+      field.setAttribute("aria-describedby", errorEl.id);
+      group.appendChild(errorEl);
     };
 
     /**
@@ -396,11 +499,14 @@ document.addEventListener("DOMContentLoaded", () => {
      * @param {HTMLElement} field - 対象のフォームフィールド
      */
     const clearError = (field) => {
-      const formGroup = field.closest(".form-group");
-      if (!formGroup) return;
+      const group = field.closest(".form-group");
+      if (!group) return;
 
-      formGroup.classList.remove("is-invalid");
-      const existing = formGroup.querySelector(".error-message");
+      group.classList.remove("is-invalid");
+      field.removeAttribute("aria-invalid");
+      field.removeAttribute("aria-describedby");
+
+      const existing = group.querySelector(".error-message");
       if (existing) existing.remove();
     };
 
@@ -426,7 +532,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // お名前（フリガナ）: 必須 + カタカナチェック
-      if (name === "furigana" || name === "kana") {
+      // name="furigana" / name="kana" / name="name-kana" に対応
+      if (name === "furigana" || name === "kana" || name === "name-kana") {
         if (!value) {
           showError(field, "フリガナを入力してください。");
           return false;
@@ -465,7 +572,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // お問い合わせ種別: 必須（select）
-      if (name === "inquiry_type" || name === "type") {
+      // name="inquiry_type" / name="inquiry-type" / name="type" に対応
+      if (name === "inquiry_type" || name === "inquiry-type" || name === "type") {
         if (tagName === "select" && (!value || value === "")) {
           showError(field, "お問い合わせ種別を選択してください。");
           return false;
@@ -514,11 +622,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  9. レビュースライダー（SP対応） (.review-cards)
+  //  10. レビュースライダー（SP対応） (.review-cards)
   // ══════════════════════════════════════════
 
   const reviewContainer = document.querySelector(".review-cards");
-  const spMediaQuery = window.matchMedia("(max-width: 768px)");
 
   if (reviewContainer) {
     let isDown = false;
@@ -606,7 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { passive: true }
     );
 
-    // resize時の再初期化（debounce使用）
+    // resize時の再初期化（debounce使用: 250ms）
     const handleSliderResize = debounce(() => {
       if (!spMediaQuery.matches) {
         // PC表示に切り替わったらスクロール位置をリセット
@@ -620,7 +727,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
-  //  10. 買取価格カードのホバーエフェクト (.price-card)
+  //  11. 買取価格カードの3Dホバーエフェクト (.price-card)
+  //      - requestAnimationFrame でバッチ処理
+  //      - will-change はホバー時のみ付与
   // ══════════════════════════════════════════
 
   const priceCards = document.querySelectorAll(".price-card");
@@ -633,25 +742,41 @@ document.addEventListener("DOMContentLoaded", () => {
     priceCards.forEach((card) => {
       card.classList.add("price-card--3d");
 
+      let ticking = false;
+
+      card.addEventListener("mouseenter", () => {
+        if (isTouchDevice()) return;
+        card.style.willChange = "transform";
+      });
+
       card.addEventListener("mousemove", (e) => {
         if (isTouchDevice()) return;
 
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left; // カード内でのX座標
-        const y = e.clientY - rect.top;  // カード内でのY座標
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
 
-        // 中心からの距離を -1 ~ 1 に正規化
-        const rotateY = ((x - centerX) / centerX) * 8;  // 最大8度
-        const rotateX = ((centerY - y) / centerY) * 8;  // 最大8度
+            // 中心からの距離を -1 ~ 1 に正規化
+            const rotateY = ((x - centerX) / centerX) * 8;  // 最大8度
+            const rotateX = ((centerY - y) / centerY) * 8;  // 最大8度
 
-        card.style.transform =
-          `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
-      });
+            card.style.transform =
+              `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
 
       card.addEventListener("mouseleave", () => {
         card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg)";
+        card.style.willChange = "auto";
+        ticking = false;
       });
     });
   }

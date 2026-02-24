@@ -6,6 +6,10 @@
   <title>ポケモンカード高額買取専門店 ニンニン｜秋葉原・中野・池袋・大阪 全7店舗</title>
   <meta name="description" content="ポケモンカード高額買取専門店ニンニンは秋葉原・中野・池袋・大阪に全7店舗展開。宅配買取なら査定額いつでも10%UP！年中無休で買取対応中。50,000件以上の買取実績。">
   <link rel="canonical" href="https://nin-nin-pokeka.jp/">
+  <!-- [7] theme-color -->
+  <meta name="theme-color" content="#d8613c">
+  <!-- [8] robots noindex（デモサイト） -->
+  <meta name="robots" content="noindex, nofollow">
 
   <!-- OGP -->
   <meta property="og:title" content="ポケモンカード高額買取専門店 ニンニン">
@@ -23,10 +27,13 @@
   <link rel="icon" href="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/common/logo.png" type="image/png">
   <link rel="apple-touch-icon" href="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/common/logo.png">
 
-  <!-- Google Fonts -->
+  <!-- [11] ヒーロー画像プリロード -->
+  <link rel="preload" as="image" href="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/index/mainimg1.jpg">
+
+  <!-- [10] Google Fonts ウェイト削減: 400;700;900 のみ（600削除） -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css">
 
@@ -164,8 +171,19 @@
     ]
   }
   </script>
+
+  <!-- [12] SVG星アイコン用 symbol 定義 -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <defs>
+      <symbol id="star-icon" viewBox="0 0 24 24">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </symbol>
+    </defs>
+  </svg>
 </head>
 <body class="home">
+
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- ========== HEADER（PC/SP統合） ========== -->
   <header class="site-header" id="site-header">
@@ -182,7 +200,8 @@
             <p>まずはお気軽にお問い合わせください</p>
           </div>
           <div class="header-tel-area">
-            <a href="tel:0343637710" class="header-tel">03-4363-7710</a>
+            <!-- [4] SP電話リンクに aria-label 追加 -->
+            <a href="tel:0343637710" class="header-tel" aria-label="03-4363-7710に電話する">03-4363-7710</a>
             <span class="header-tel-sub">年中無休 / 受付時間 13:00-20:00</span>
           </div>
           <div class="header-buttons">
@@ -211,6 +230,7 @@
         <span></span><span></span><span></span>
       </button>
     </div>
+    <!-- [14] drop_menu に transition 用クラス構造準備（閉じ: .drop_menu / 開き: .drop_menu.is-open） -->
     <nav class="drop_menu sp-on" id="sp-drop-menu" aria-hidden="true">
       <ul>
         <li><a href="#category">買取価格表</a></li>
@@ -239,16 +259,17 @@
           <h1>ポケモンカード<br>高額買取専門店</h1>
           <p class="hero-sub">秋葉原・中野・池袋・大阪 全7店舗展開</p>
           <div class="hero-cta">
-            <a href="tel:0343637710" class="cta-tel">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <!-- [4] SP電話リンクに aria-label / [2] 装飾SVGに aria-hidden + focusable -->
+            <a href="tel:0343637710" class="cta-tel" aria-label="03-4363-7710に電話する">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
               03-4363-7710
             </a>
             <a href="#contact" class="cta-line">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .348-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .349-.281.63-.63.63h-2.386a.63.63 0 0 1-.63-.63V9.093a.63.63 0 0 1 .63-.63h2.386c.349 0 .63.282.63.63 0 .349-.281.631-.63.631H17.61v1.14h1.755zm-3.855 3.016a.63.63 0 0 1-.63.63.626.626 0 0 1-.51-.262l-1.69-2.36v1.992a.63.63 0 0 1-1.26 0V9.093a.63.63 0 0 1 .63-.63c.2 0 .388.096.51.262l1.69 2.36V9.093a.63.63 0 0 1 1.26 0v3.786zm-5.741 0a.63.63 0 0 1-1.26 0V9.093a.63.63 0 0 1 1.26 0v3.786zM7.154 13.5H4.77a.63.63 0 0 1-.631-.63V9.093a.63.63 0 0 1 1.261 0v3.155h1.755c.348 0 .63.283.63.63 0 .349-.282.631-.63.631M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.593.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.268 14.245 24 12.39 24 10.314"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .348-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .349-.281.63-.63.63h-2.386a.63.63 0 0 1-.63-.63V9.093a.63.63 0 0 1 .63-.63h2.386c.349 0 .63.282.63.63 0 .349-.281.631-.63.631H17.61v1.14h1.755zm-3.855 3.016a.63.63 0 0 1-.63.63.626.626 0 0 1-.51-.262l-1.69-2.36v1.992a.63.63 0 0 1-1.26 0V9.093a.63.63 0 0 1 .63-.63c.2 0 .388.096.51.262l1.69 2.36V9.093a.63.63 0 0 1 1.26 0v3.786zm-5.741 0a.63.63 0 0 1-1.26 0V9.093a.63.63 0 0 1 1.26 0v3.786zM7.154 13.5H4.77a.63.63 0 0 1-.631-.63V9.093a.63.63 0 0 1 1.261 0v3.155h1.755c.348 0 .63.283.63.63 0 .349-.282.631-.63.631M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.593.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.268 14.245 24 12.39 24 10.314"></path></svg>
               LINE査定
             </a>
             <a href="#contact" class="cta-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               無料査定フォーム
             </a>
           </div>
@@ -295,7 +316,8 @@
             </div>
             <div class="service-card__body">
               <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d8613c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <!-- [2] サービスカード内SVGに aria-hidden + focusable -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d8613c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
               </div>
               <h3>宅配買取</h3>
               <div class="line"></div>
@@ -309,7 +331,7 @@
             </div>
             <div class="service-card__body">
               <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d8613c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d8613c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
               </div>
               <h3>店頭買取</h3>
               <div class="line"></div>
@@ -323,7 +345,7 @@
             </div>
             <div class="service-card__body">
               <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d8613c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d8613c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
               </div>
               <h3>通販</h3>
               <div class="line"></div>
@@ -335,33 +357,40 @@
       </div>
     </section>
 
-    <!-- ========== ABOUT（ニンニンが選ばれる理由） ========== -->
+    <!-- ========== ABOUT（ニンニンが選ばれる理由）[13] 2カラム構成 ========== -->
     <section class="about" id="about">
       <div class="about-bg">
         <div class="wrapper">
-          <div class="about-text-box">
-            <h2 class="about-title">ニンニンが<br>選ばれる理由</h2>
-            <div class="about-points">
-              <div class="about-point fade-in">
-                <span class="point-num">01</span>
-                <p>宅配買取なら査定額がいつでも<strong>10%アップ</strong>！</p>
-              </div>
-              <div class="about-point fade-in">
-                <span class="point-num">02</span>
-                <p>スリーブやファイル等に入れたまま送っていただいて<strong>OK</strong>！</p>
-              </div>
-              <div class="about-point fade-in">
-                <span class="point-num">03</span>
-                <p>カードにキズや汚れが付いていても<strong>大丈夫</strong>！</p>
-              </div>
+          <div class="about-columns">
+            <!-- 左カラム: ビジュアル要素 -->
+            <div class="about-visual">
+              <img src="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/index/main_visual_img.png" alt="ニンニンキャラクター" width="400" height="500" loading="lazy" class="about-character-img">
             </div>
-            <a href="#contact" class="cta-primary">無料査定を申し込む</a>
+            <!-- 右カラム: テキスト -->
+            <div class="about-text-box">
+              <h2 class="about-title">ニンニンが<br>選ばれる理由</h2>
+              <div class="about-points">
+                <div class="about-point fade-in">
+                  <span class="point-num">01</span>
+                  <p>宅配買取なら査定額がいつでも<strong>10%アップ</strong>！</p>
+                </div>
+                <div class="about-point fade-in">
+                  <span class="point-num">02</span>
+                  <p>スリーブやファイル等に入れたまま送っていただいて<strong>OK</strong>！</p>
+                </div>
+                <div class="about-point fade-in">
+                  <span class="point-num">03</span>
+                  <p>カードにキズや汚れが付いていても<strong>大丈夫</strong>！</p>
+                </div>
+              </div>
+              <a href="#contact" class="cta-primary">無料査定を申し込む</a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ========== 買取価格ハイライト（新規） ========== -->
+    <!-- ========== 買取価格ハイライト ========== -->
     <section class="price-highlight" id="price">
       <div class="wrapper">
         <h2 class="section-heading">注目の買取価格</h2>
@@ -572,7 +601,7 @@
       </div>
     </section>
 
-    <!-- ========== お客様の声 ========== -->
+    <!-- ========== お客様の声 [12] SVG星を symbol + use パターンに最適化 ========== -->
     <section class="reviews" id="reviews">
       <div class="wrapper">
         <h2 class="section-heading">お客様の声</h2>
@@ -580,55 +609,55 @@
         <div class="review-cards">
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「初めての宅配買取でしたが、丁寧な対応で安心できました。査定額も想像以上で大満足です！」</p>
             <p class="review-author">東京都 T.K様（30代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「秋葉原店に持ち込みました。スタッフの方がカードの状態を丁寧に見てくれて、納得の金額でした。」</p>
             <p class="review-author">千葉県 S.M様（20代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「他店より高い買取価格でびっくり。宅配買取の10%UPも大きいです。リピート確定！」</p>
             <p class="review-author">大阪府 Y.H様（40代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="4つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#ccc" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#ccc" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「コレクション整理で大量に送りましたが、1枚1枚きちんと査定してもらえました。また利用します。」</p>
             <p class="review-author">神奈川県 A.T様（30代）</p>
           </div>
           <div class="review-card fade-in">
             <div class="review-stars" aria-label="5つ星評価">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#d8613c" stroke="none" aria-hidden="true" focusable="false"><use href="#star-icon"/></svg>
             </div>
             <p class="review-text">「池袋店で即現金買取してもらいました。駅からも近くてアクセスも良いです。対応も早くて助かりました。」</p>
             <p class="review-author">埼玉県 K.N様（20代）</p>
@@ -855,12 +884,14 @@
     </section>
 
     <!-- ========== CONTACT（フォーム付き） ========== -->
+    <!-- [1] name属性をJSバリデーションと一致 / [5] プライバシーチェックボックスにid+labelのfor / [6] aria-describedby用ID準備 -->
     <section class="contact" id="contact">
       <div class="wrapper">
         <div class="contact-grid">
           <div class="contact-info">
             <h2 class="section-heading">お気軽にお問い合わせください</h2>
-            <p class="contact-tel"><a href="tel:0343637710">03-4363-7710</a></p>
+            <!-- [4] SP電話リンクに aria-label -->
+            <p class="contact-tel"><a href="tel:0343637710" aria-label="03-4363-7710に電話する">03-4363-7710</a></p>
             <p class="contact-hours">年中無休 / 受付時間 13:00-20:00</p>
             <div class="contact-line">
               <h3>LINEで簡単査定</h3>
@@ -870,41 +901,51 @@
           <div class="contact-form">
             <h3>査定お申し込みフォーム</h3>
             <form action="#contact" method="post">
+              <!-- [1] name="inquiry-type" → name="inquiry_type" -->
               <div class="form-group">
                 <label for="inquiry-type">お問い合わせ種別 <span class="required">必須</span></label>
-                <select id="inquiry-type" name="inquiry-type" required>
+                <select id="inquiry-type" name="inquiry_type" required aria-describedby="inquiry-type-error">
                   <option value="">選択してください</option>
                   <option value="takuhai">宅配買取</option>
                   <option value="tentou">店頭買取</option>
                   <option value="tsuhan">通販について</option>
                   <option value="other">その他</option>
                 </select>
+                <!-- [6] aria-describedby用エラー表示エリア -->
+                <span id="inquiry-type-error" class="error-message" role="alert" aria-live="polite"></span>
               </div>
               <div class="form-group">
                 <label for="name">お名前 <span class="required">必須</span></label>
-                <input type="text" id="name" name="name" required placeholder="山田太郎">
+                <input type="text" id="name" name="name" required placeholder="山田太郎" aria-describedby="name-error">
+                <span id="name-error" class="error-message" role="alert" aria-live="polite"></span>
               </div>
+              <!-- [1] name="name-kana" → name="kana" -->
               <div class="form-group">
                 <label for="name-kana">お名前（フリガナ） <span class="required">必須</span></label>
-                <input type="text" id="name-kana" name="name-kana" required placeholder="ヤマダタロウ">
+                <input type="text" id="name-kana" name="kana" required placeholder="ヤマダタロウ" aria-describedby="kana-error">
+                <span id="kana-error" class="error-message" role="alert" aria-live="polite"></span>
               </div>
               <div class="form-group">
                 <label for="email">メールアドレス <span class="required">必須</span></label>
-                <input type="email" id="email" name="email" required placeholder="example@mail.com">
+                <input type="email" id="email" name="email" required placeholder="example@mail.com" aria-describedby="email-error">
+                <span id="email-error" class="error-message" role="alert" aria-live="polite"></span>
               </div>
               <div class="form-group">
                 <label for="phone">電話番号</label>
-                <input type="tel" id="phone" name="phone" placeholder="090-1234-5678">
+                <input type="tel" id="phone" name="phone" placeholder="090-1234-5678" aria-describedby="phone-error">
+                <span id="phone-error" class="error-message" role="alert" aria-live="polite"></span>
               </div>
               <div class="form-group">
                 <label for="message">お問い合わせ内容</label>
                 <textarea id="message" name="message" rows="4" placeholder="買取希望のカード情報などをご記入ください"></textarea>
               </div>
+              <!-- [5] プライバシーチェックボックスに明示的な id="privacy-agree" + labelのfor設定 -->
               <div class="form-group form-group--checkbox">
-                <label>
-                  <input type="checkbox" name="privacy" required>
+                <input type="checkbox" id="privacy-agree" name="privacy" required aria-describedby="privacy-error">
+                <label for="privacy-agree">
                   <a href="#privacy">プライバシーポリシー</a>に同意する <span class="required">必須</span>
                 </label>
+                <span id="privacy-error" class="error-message" role="alert" aria-live="polite"></span>
               </div>
               <p class="form-note">※デモサイトのため、実際には送信されません</p>
               <button type="submit" class="cta-primary cta-submit">送信する</button>
@@ -963,22 +1004,24 @@
         </nav>
       </div>
     </div>
+    <!-- [9] コピーライト年を 2024-2026 に更新 -->
     <div class="copyright">
-      <p>Copyright (C) 2024 ポケカ専門店「ニンニン」（株式会社NINJA） All rights reserved.</p>
+      <p>Copyright (C) 2024-2026 ポケカ専門店「ニンニン」（株式会社NINJA） All rights reserved.</p>
     </div>
   </footer>
 
   <!-- ========== SP FLOATING BAR ========== -->
   <div class="sp-floating sp-on">
     <ul>
-      <li class="sp-float-tel"><a href="tel:0343637710">電話で問合せ</a></li>
+      <!-- [4] SP電話リンクに aria-label -->
+      <li class="sp-float-tel"><a href="tel:0343637710" aria-label="03-4363-7710に電話する">電話で問合せ</a></li>
       <li class="sp-float-form"><a href="#contact">査定お申し込み</a></li>
       <li class="sp-float-top"><a href="#site-header" id="pageTopSp">TOP</a></li>
     </ul>
   </div>
 
-  <!-- Page Top -->
-  <div id="pageTop" class="pc-on"><a href="#site-header">TOP</a></div>
+  <!-- [3] #pageTop a に aria-label="ページの先頭へ戻る" を追加 -->
+  <div id="pageTop" class="pc-on"><a href="#site-header" aria-label="ページの先頭へ戻る">TOP</a></div>
 
   <script src="assets/js/main.js" defer></script>
 </body>

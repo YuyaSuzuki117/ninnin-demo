@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* ============================================================
-   ポケカ専門店ニンニン — Complete Redesign
-   Design: 和モダン × トレーディングカードのプレミアム感
+   NinNin — Complete Redesign
+   Design: Japanese Modern x Trading Card Premium Feel
    Architecture: CSS Variables + Grid + Flexbox (No float, No !important)
    ============================================================ */
 
@@ -9,7 +9,7 @@
    0. CSS VARIABLES
    ========================================================== */
 :root {
-  /* ブランドカラー */
+  /* Brand Colors */
   --color-primary: #d8613c;
   --color-primary-dark: #b84e30;
   --color-primary-light: #e8845f;
@@ -19,50 +19,57 @@
   --color-gold: #b8860b;
   --color-gold-light: #daa520;
 
-  /* 背景 */
+  /* Backgrounds */
   --color-bg: #f9f9f9;
   --color-bg-alt: #f0ebe4;
   --color-bg-dark: #1a1a1a;
   --color-white: #fff;
 
-  /* テキスト */
+  /* Text — [Fix #14] contrast improved: #777 -> #666 */
   --color-text: #111;
   --color-text-sub: #555;
-  --color-text-light: #777;
+  --color-text-light: #666;
   --color-text-inverse: #fff;
 
-  /* 機能色 */
+  /* Functional Colors */
   --color-line: #06C755;
   --color-error: #dc3545;
   --color-success: #28a745;
 
-  /* スペーシング */
+  /* Spacing */
   --section-gap: 100px;
   --section-gap-sp: 60px;
   --wrapper-width: 1200px;
   --wrapper-padding: 24px;
 
-  /* フォント */
+  /* Fonts */
   --font-body: "Noto Sans JP", sans-serif;
   --font-heading: "Noto Serif JP", serif;
 
-  /* 角丸 */
+  /* Border Radius */
   --radius-sm: 6px;
   --radius: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* シャドウ */
+  /* Shadows */
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
   --shadow: 0 4px 16px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
   --shadow-xl: 0 12px 48px rgba(0,0,0,0.16);
 
-  /* トランジション */
+  /* Transitions */
   --transition-fast: 0.2s ease;
   --transition: 0.3s ease;
   --transition-slow: 0.5s ease;
+
+  /* [Fix #4] z-index system */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal: 400;
+  --z-floating: 500;
 }
 
 /* ==========================================================
@@ -90,6 +97,15 @@ body {
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* [Fix #2] text-wrap for headings and body paragraphs */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 a {
@@ -128,6 +144,18 @@ button {
   cursor: pointer;
 }
 
+/* [Fix #7] Focus ring for all interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 /* ==========================================================
    2. LAYOUT HELPERS
    ========================================================== */
@@ -147,7 +175,7 @@ button {
 }
 
 /* ==========================================================
-   3. SECTION HEADING（統一見出しスタイル）
+   3. SECTION HEADING (unified heading style)
    ========================================================== */
 .section-heading {
   font-family: var(--font-heading);
@@ -195,12 +223,12 @@ button {
 }
 
 /* ==========================================================
-   4. SITE HEADER（PC/SP統合）
+   4. SITE HEADER (PC/SP unified)
    ========================================================== */
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 500;
+  z-index: var(--z-floating);
   background: var(--color-white);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition);
@@ -274,6 +302,7 @@ button {
   gap: 8px;
 }
 
+/* [Fix #1] transition: all -> specific properties */
 .btn-header {
   display: inline-flex;
   align-items: center;
@@ -283,7 +312,7 @@ button {
   font-weight: 700;
   text-align: center;
   border-radius: var(--radius-sm);
-  transition: all var(--transition);
+  transition: background-color var(--transition), color var(--transition), transform var(--transition), border-color var(--transition);
   border: 2px solid transparent;
 }
 
@@ -386,7 +415,7 @@ button {
   height: 32px;
 }
 
-/* ハンバーガーボタン */
+/* Hamburger button */
 .drop_btn {
   width: 52px;
   height: 52px;
@@ -401,6 +430,7 @@ button {
   background-color: var(--color-primary-dark);
 }
 
+/* [Fix #1] transition: all -> specific properties for hamburger spans */
 .drop_btn span {
   display: block;
   width: 22px;
@@ -409,7 +439,7 @@ button {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  transition: all var(--transition);
+  transition: top var(--transition), transform var(--transition), opacity var(--transition);
 }
 
 .drop_btn span:nth-child(1) { top: 17px; }
@@ -430,16 +460,20 @@ button {
   transform: translateX(-50%) rotate(-45deg);
 }
 
-/* ドロップメニュー */
+/* [Fix #11] Drop menu slide animation */
 .drop_menu {
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
   background: var(--color-white);
   border-top: 1px solid var(--color-accent);
   box-shadow: var(--shadow);
+  transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 
 .drop_menu.is-open {
-  display: block;
+  max-height: 500px;
+  opacity: 1;
 }
 
 .drop_menu ul {
@@ -467,7 +501,7 @@ button {
 }
 
 /* ==========================================================
-   5. HERO（ファーストビュー）
+   5. HERO (first view)
    ========================================================== */
 .hero {
   position: relative;
@@ -508,6 +542,7 @@ button {
   color: var(--color-text-inverse);
 }
 
+/* [Fix #10] Pulse animation replaced: box-shadow -> pseudo-element with opacity + scale */
 .hero-badge {
   display: inline-block;
   background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
@@ -517,8 +552,19 @@ button {
   font-size: 0.875rem;
   font-weight: 700;
   margin-bottom: 24px;
-  animation: pulse 2s infinite;
   letter-spacing: 0.05em;
+  position: relative;
+}
+
+.hero-badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -1;
+  opacity: 0.6;
+  animation: pulse-ring 2s infinite;
 }
 
 .hero h1 {
@@ -546,7 +592,7 @@ button {
   filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
 }
 
-/* 統計バッジ */
+/* Stats badges */
 .hero-stats {
   display: flex;
   gap: 32px;
@@ -572,7 +618,7 @@ button {
 }
 
 /* ==========================================================
-   6. 信頼バッジ (.trust-badges)
+   6. Trust Badges (.trust-badges)
    ========================================================== */
 .trust-badges {
   background: var(--color-bg-dark);
@@ -601,8 +647,9 @@ button {
 }
 
 /* ==========================================================
-   7. CTA ボタン群
+   7. CTA Button Group
    ========================================================== */
+/* [Fix #1] transition: all -> specific properties */
 .cta-primary {
   display: inline-flex;
   align-items: center;
@@ -614,7 +661,7 @@ button {
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
-  transition: all var(--transition);
+  transition: background-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
   box-shadow: var(--shadow);
   border: none;
   cursor: pointer;
@@ -640,7 +687,7 @@ button {
   font-weight: 700;
   font-size: 1.125rem;
   text-decoration: none;
-  transition: all var(--transition);
+  transition: background-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition), opacity var(--transition);
   box-shadow: var(--shadow);
 }
 
@@ -662,7 +709,7 @@ button {
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
-  transition: all var(--transition);
+  transition: background-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition), opacity var(--transition);
   box-shadow: var(--shadow);
 }
 
@@ -678,11 +725,23 @@ button {
   font-size: 0.875rem;
 }
 
+/* [Fix #10] cta-submit pulse replaced with pseudo-element animation */
 .cta-submit {
   width: 100%;
   padding: 18px;
   font-size: 1.125rem;
-  animation: pulse 2.5s infinite;
+  position: relative;
+}
+
+.cta-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -1;
+  opacity: 0.5;
+  animation: pulse-ring 2.5s infinite;
 }
 
 /* Hero CTA area */
@@ -693,13 +752,19 @@ button {
   flex-wrap: wrap;
 }
 
-/* パルスアニメーション */
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(216,97,60,0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(216,97,60,0); }
+/* [Fix #10] Pulse animation: box-shadow replaced with pseudo-element + opacity + transform: scale() */
+@keyframes pulse-ring {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.15);
+  }
 }
 
-/* セクション間CTA */
+/* Section CTA */
 .section-cta {
   text-align: center;
   margin-top: 48px;
@@ -714,11 +779,25 @@ button {
 }
 
 /* ==========================================================
-   8. SERVICE（3カラム サービス紹介）
+   8. SERVICE (3-column service introduction)
    ========================================================== */
+/* [Fix #12] Wave separator for service section */
 .service {
   padding: var(--section-gap) 0;
   background: var(--color-bg);
+  position: relative;
+}
+
+.service::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 C200,30 400,0 600,15 C800,30 1000,0 1200,15 L1200,30 L0,30Z' fill='%23f9f9f9'/%3E%3C/svg%3E") repeat-x;
+  background-size: 1200px 30px;
 }
 
 .service-cards {
@@ -797,7 +876,8 @@ button {
   line-height: 1.8;
 }
 
-/* ボタン（border + scaleフィル） */
+/* Button (border + scale fill) */
+/* [Fix #1] transition: all -> specific properties */
 .button {
   display: inline-block;
   position: relative;
@@ -812,7 +892,7 @@ button {
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  transition: all var(--transition);
+  transition: color var(--transition), border-color var(--transition);
 }
 
 .button::after {
@@ -826,7 +906,7 @@ button {
   z-index: -1;
   transform: scale(0.5);
   opacity: 0;
-  transition: all var(--transition);
+  transition: transform var(--transition), opacity var(--transition);
 }
 
 .button:hover {
@@ -853,11 +933,24 @@ button {
 }
 
 /* ==========================================================
-   9. ABOUT（選ばれる理由）
+   9. ABOUT (Reasons to choose us)
    ========================================================== */
+/* [Fix #12] Wave separator for about section */
 .about {
   position: relative;
   overflow: hidden;
+}
+
+.about::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 C200,30 400,0 600,15 C800,30 1000,0 1200,15 L1200,30 L0,30Z' fill='%23c2a990'/%3E%3C/svg%3E") repeat-x;
+  background-size: 1200px 30px;
 }
 
 .about-bg {
@@ -868,13 +961,26 @@ button {
   padding: var(--section-gap) 0;
 }
 
-.about-bg .wrapper {
+/* [Fix #15] About section 2-column grid layout */
+.about-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.about-visual {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-visual img {
+  max-width: 100%;
+  height: auto;
 }
 
 .about-text-box {
-  width: 560px;
   color: var(--color-text-inverse);
 }
 
@@ -900,7 +1006,7 @@ button {
   padding: 16px 20px;
   border-radius: var(--radius-sm);
   backdrop-filter: blur(4px);
-  transition: background var(--transition);
+  transition: background-color var(--transition);
 }
 
 .about-point:hover {
@@ -931,7 +1037,7 @@ button {
 }
 
 /* ==========================================================
-   10. 買取価格ハイライト (.price-highlight)【新規】
+   10. Price Highlight (.price-highlight)
    ========================================================== */
 .price-highlight {
   padding: var(--section-gap) 0;
@@ -958,8 +1064,12 @@ button {
   box-shadow: var(--shadow-xl);
 }
 
+/* [Fix #9] will-change: transform only on :hover, not always */
 .price-card--3d {
   transition: transform 0.3s ease;
+}
+
+.price-card--3d:hover {
   will-change: transform;
 }
 
@@ -1027,7 +1137,7 @@ button {
 }
 
 /* ==========================================================
-   11. 宅配買取セクション (.takuhai)
+   11. Delivery Purchase (.takuhai)
    ========================================================== */
 .takuhai {
   padding: var(--section-gap) 0;
@@ -1074,7 +1184,7 @@ button {
 }
 
 /* ==========================================================
-   12. 店頭買取セクション (.tentou)
+   12. In-Store Purchase (.tentou)
    ========================================================== */
 .tentou {
   padding: var(--section-gap) 0;
@@ -1144,7 +1254,7 @@ button {
 }
 
 /* ==========================================================
-   13. 買取カテゴリ (.category)
+   13. Purchase Category (.category)
    ========================================================== */
 .category {
   padding: var(--section-gap) 0;
@@ -1203,11 +1313,25 @@ button {
 }
 
 /* ==========================================================
-   14. お客様の声 (.reviews)
+   14. Customer Reviews (.reviews)
    ========================================================== */
+/* [Fix #12] Wave separator for reviews section */
 .reviews {
   padding: var(--section-gap) 0;
   background: var(--color-bg-alt);
+  position: relative;
+}
+
+.reviews::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 C200,30 400,0 600,15 C800,30 1000,0 1200,15 L1200,30 L0,30Z' fill='%23f0ebe4'/%3E%3C/svg%3E") repeat-x;
+  background-size: 1200px 30px;
 }
 
 .review-cards {
@@ -1264,7 +1388,7 @@ button {
 }
 
 /* ==========================================================
-   15. 店舗案内 (.shop)
+   15. Shop Guide (.shop)
    ========================================================== */
 .shop {
   padding: var(--section-gap) 0;
@@ -1343,7 +1467,7 @@ button {
 }
 
 /* ==========================================================
-   16. ニュース (.news)
+   16. News (.news)
    ========================================================== */
 .news {
   padding: var(--section-gap) 0;
@@ -1405,7 +1529,7 @@ button {
   color: var(--color-primary);
 }
 
-/* サイドバー */
+/* Sidebar */
 .news-side h3 {
   font-size: 1rem;
   font-weight: 700;
@@ -1537,7 +1661,7 @@ button {
 }
 
 /* ==========================================================
-   18. CONTACT（お問い合わせ）
+   18. CONTACT (inquiry)
    ========================================================== */
 .contact {
   padding: var(--section-gap) 0;
@@ -1600,7 +1724,7 @@ button {
   color: var(--color-text);
 }
 
-/* フォーム */
+/* Form */
 .contact-form {
   background: var(--color-white);
   padding: 40px;
@@ -1648,12 +1772,13 @@ button {
   color: var(--color-text);
 }
 
+/* [Fix #5] outline: none -> outline: 2px solid transparent (high-contrast mode support) */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(216,97,60,0.15);
-  outline: none;
+  outline: 2px solid transparent;
 }
 
 .form-group input::placeholder,
@@ -1679,11 +1804,26 @@ button {
   margin-bottom: 16px;
 }
 
-/* フォームバリデーション */
+/* [Fix #6] Form validation: .is-invalid + aria-invalid styles */
 .form-group.is-invalid input,
 .form-group.is-invalid select,
-.form-group.is-invalid textarea {
+.form-group.is-invalid textarea,
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
   border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(220,53,69,0.15);
+}
+
+.form-group.is-invalid input:focus,
+.form-group.is-invalid select:focus,
+.form-group.is-invalid textarea:focus,
+input[aria-invalid="true"]:focus,
+select[aria-invalid="true"]:focus,
+textarea[aria-invalid="true"]:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(220,53,69,0.25);
+  outline: 2px solid transparent;
 }
 
 .error-message {
@@ -1806,7 +1946,7 @@ footer .wrapper {
   color: var(--color-text-inverse);
 }
 
-/* コピーライトバー */
+/* Copyright bar */
 .copyright {
   background: var(--color-primary);
   text-align: center;
@@ -1818,14 +1958,16 @@ footer .wrapper {
 /* ==========================================================
    20. SP FLOATING BAR
    ========================================================== */
+/* [Fix #3] padding-bottom: env(safe-area-inset-bottom) added */
 .sp-floating {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 2000;
+  z-index: var(--z-floating);
   height: 64px;
   box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .sp-floating ul {
@@ -1884,7 +2026,7 @@ footer .wrapper {
   position: fixed;
   bottom: 50px;
   right: 30px;
-  z-index: 999;
+  z-index: var(--z-fixed);
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--transition), visibility var(--transition), transform var(--transition);
@@ -1907,13 +2049,27 @@ footer .wrapper {
   font-size: 0.6875rem;
   font-weight: 700;
   box-shadow: var(--shadow);
-  transition: background var(--transition), transform var(--transition);
+  transition: background-color var(--transition), transform var(--transition);
 }
 
 #pageTop a:hover {
   background: var(--color-primary-dark);
   color: var(--color-text-inverse);
   transform: translateY(-3px);
+}
+
+/* ==========================================================
+   21.5 SCROLL PROGRESS BAR
+   ========================================================== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-primary);
+  z-index: var(--z-floating, 500);
+  transition: width 0.1s linear;
+  pointer-events: none;
 }
 
 /* ==========================================================
@@ -1937,20 +2093,35 @@ footer .wrapper {
 .fade-in:nth-child(6) { transition-delay: 0.5s; }
 
 /* ==========================================================
-   23. RESPONSIVE: タブレット (max-width: 1024px)
+   23. REDUCED MOTION
+   [Fix #8] prefers-reduced-motion support
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}
+
+/* ==========================================================
+   24. RESPONSIVE: Tablet (max-width: 1024px)
    ========================================================== */
 @media (max-width: 1024px) {
   :root {
     --section-gap: 80px;
   }
 
-  /* ナビ */
+  /* Navigation */
   .g-navi li a {
     font-size: 0.75rem;
     padding: 12px 6px;
   }
 
-  /* サービス: 2列 */
+  /* Service: 2 columns */
   .service-cards {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
@@ -1961,30 +2132,36 @@ footer .wrapper {
     width: 280px;
   }
 
-  /* ニュース: サイド幅縮小 */
+  /* News: sidebar shrink */
   .news-area {
     grid-template-columns: 1fr 280px;
     gap: 30px;
   }
 
-  /* レビュー: 2列 */
+  /* Reviews: 2 columns */
   .review-cards {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* 価格: 2列 */
+  /* Price: 2 columns */
   .price-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* コンタクト */
+  /* Contact */
   .contact-grid {
+    gap: 32px;
+  }
+
+  /* [Fix #15] About: keep 2-column on tablet */
+  .about-bg .wrapper {
+    grid-template-columns: 1fr 1fr;
     gap: 32px;
   }
 }
 
 /* ==========================================================
-   24. RESPONSIVE: SP (max-width: 768px)
+   25. RESPONSIVE: SP (max-width: 768px)
    ========================================================== */
 @media (max-width: 768px) {
   :root {
@@ -2027,7 +2204,7 @@ footer .wrapper {
     gap: 20px;
   }
 
-  /* Service: 1列 */
+  /* Service: 1 column */
   .service-cards {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -2037,13 +2214,14 @@ footer .wrapper {
     height: 180px;
   }
 
-  /* About */
+  /* [Fix #15] About: single column on SP */
   .about-bg {
     min-height: auto;
   }
 
-  .about-bg .wrapper {
-    justify-content: center;
+  .about-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .about-text-box {
@@ -2054,19 +2232,19 @@ footer .wrapper {
     font-size: 1.5rem;
   }
 
-  /* 価格: 2列 */
+  /* Price: 2 columns */
   .price-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
 
-  /* 宅配買取: 1列 */
+  /* Delivery purchase: 1 column */
   .takuhai-content {
     grid-template-columns: 1fr;
     gap: 24px;
   }
 
-  /* 店頭: 1列 */
+  /* In-store: 1 column */
   .step-flow {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -2081,12 +2259,13 @@ footer .wrapper {
     height: 100px;
   }
 
+  /* [Fix #13] Category card SP font size: 0.625rem -> 0.75rem */
   .category-card__name {
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     padding: 8px 4px;
   }
 
-  /* Shop: 1列 */
+  /* Shop: 1 column */
   .shop-card {
     grid-template-columns: 1fr;
   }
@@ -2099,7 +2278,7 @@ footer .wrapper {
     padding: 16px 20px;
   }
 
-  /* News: 1列 */
+  /* News: 1 column */
   .news-area {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -2114,7 +2293,7 @@ footer .wrapper {
     height: 160px;
   }
 
-  /* Reviews: 1列 + 横スクロールスナップ */
+  /* Reviews: horizontal scroll snap */
   .review-cards {
     grid-template-columns: 1fr;
     display: flex;
@@ -2131,7 +2310,7 @@ footer .wrapper {
     flex-shrink: 0;
   }
 
-  /* Contact: 1列 */
+  /* Contact: 1 column */
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -2192,14 +2371,21 @@ footer .wrapper {
     border-bottom: 2px solid var(--color-primary);
   }
 
-  /* Page Top: SP floating bar分上げる */
+  /* Page Top: raise above SP floating bar */
   #pageTop {
     bottom: 80px;
+  }
+
+  /* Wave separators: hide on SP to avoid layout issues */
+  .service::after,
+  .about::after,
+  .reviews::after {
+    display: none;
   }
 }
 
 /* ==========================================================
-   25. RESPONSIVE: 小SP (max-width: 480px)
+   26. RESPONSIVE: Small SP (max-width: 480px)
    ========================================================== */
 @media (max-width: 480px) {
   /* Hero */
@@ -2211,23 +2397,23 @@ footer .wrapper {
     gap: 16px;
   }
 
-  /* 価格: 1列 */
+  /* Price: 1 column */
   .price-grid {
     grid-template-columns: 1fr;
   }
 
-  /* Category: 2列 */
+  /* Category: 2 columns */
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* 信頼バッジ: 縦積み */
+  /* Trust badges: vertical stack */
   .trust-badges .wrapper {
     flex-direction: column;
     gap: 12px;
   }
 
-  /* CTA ボタン縮小 */
+  /* CTA button shrink */
   .cta-primary {
     padding: 14px 28px;
     font-size: 0.875rem;
@@ -2242,7 +2428,7 @@ footer .wrapper {
     padding: 12px 24px;
   }
 
-  /* コンタクトフォーム */
+  /* Contact form */
   .contact-form {
     padding: 20px 16px;
   }
@@ -2251,7 +2437,7 @@ footer .wrapper {
     font-size: 1.375rem;
   }
 
-  /* フッターナビ */
+  /* Footer nav */
   .f_nav {
     flex-direction: column;
     gap: 16px;
@@ -2265,7 +2451,7 @@ footer .wrapper {
 }
 
 /* ==========================================================
-   26. PRINT STYLES
+   27. PRINT STYLES
    ========================================================== */
 @media print {
   .hero,
