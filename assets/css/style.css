@@ -2363,8 +2363,27 @@ footer .wrapper {
   }
 
   .f_nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+    width: 100%;
+  }
+
+  .f_nav ul:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
     justify-content: center;
-    gap: 20px;
+  }
+
+  .f_nav ul li {
+    padding: 3px 0;
+  }
+
+  .f_nav ul li a {
+    font-size: 0.75rem;
+    padding-left: 12px;
   }
 
   /* Footer bar space */
@@ -2473,9 +2492,8 @@ footer .wrapper {
 
   /* Footer nav */
   .f_nav {
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
   }
 
   /* Reviews scroll */
