@@ -98,6 +98,7 @@ body {
   font-weight: 400;
   color: var(--color-text);
   background: var(--color-bg);
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -625,12 +626,15 @@ summary:focus-visible,
   width: 120px;
   animation: float 3s ease-in-out infinite;
   animation-delay: 0.5s;
+  background: transparent;
 }
 
 .hero-pikachu-mini img {
   width: 100%;
   height: auto;
+  background: transparent;
   filter: drop-shadow(0 8px 20px rgba(255,203,5,0.4));
+  mix-blend-mode: normal;
 }
 
 @keyframes float {
@@ -2276,13 +2280,16 @@ footer .wrapper {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    grid-template-columns: none;
   }
   .service-card {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .service-card__img {
-    height: 120px;
+    height: 100px;
   }
 
   .service-card__body {
@@ -2290,9 +2297,19 @@ footer .wrapper {
     padding: 0 16px 16px;
   }
 
+  .service-card__body h3 {
+    font-size: 1.05rem;
+  }
+
   .service-card__body p {
     font-size: 0.75rem;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .cta-small {
+    padding: 8px 16px;
+    font-size: 0.8rem;
   }
 
   /* About: compact on SP */
@@ -2324,12 +2341,19 @@ footer .wrapper {
   }
 
   .about-point {
-    padding: 12px 16px;
-    font-size: 0.85rem;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .about-point .point-num {
+    font-size: 1.25rem;
   }
 
   .about-point p {
     font-size: 0.8rem;
+    line-height: 1.6;
   }
 
   /* Price: horizontal scroll snap */
