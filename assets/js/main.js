@@ -1,129 +1,658 @@
 /**
  * ポケカ専門店ニンニン - Main JavaScript
- * 鷹ノ羽陸運パターン踏襲
+ * Vanilla ES6+ / jQuery不使用
+ * パフォーマンス最優先 / アクセシビリティ対応
  */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  /* ========================================
-   * Utility: throttle
-   * ======================================== */
-  function throttle(fn, wait) {
-    var lastTime = 0;
-    return function () {
-      var now = Date.now();
+  // ══════════════════════════════════════════
+  //  Utilities
+  // ══════════════════════════════════════════
+
+  /**
+   * throttle - 一定間隔でのみ関数を実行
+   * @param {Function} fn - 実行する関数
+   * @param {number} wait - 最小実行間隔（ms）
+   * @returns {Function}
+   */
+  const throttle = (fn, wait) => {
+    let lastTime = 0;
+    return (...args) => {
+      const now = Date.now();
       if (now - lastTime >= wait) {
         lastTime = now;
-        fn.apply(null, arguments);
+        fn(...args);
       }
     };
-  }
+  };
 
-  /* ========================================
-   * 1. SP Hamburger Menu（鷹ノ羽パターン：.drop_btn）
-   * ======================================== */
-  var dropBtn = document.querySelector(".drop_btn");
-  var dropMenu = document.querySelector(".drop_menu");
+  /**
+   * debounce - 呼び出しが止まってから一定時間後に関数を実行
+   * @param {Function} fn - 実行する関数
+   * @param {number} delay - 遅延時間（ms）
+   * @returns {Function}
+   */
+  const debounce = (fn, delay) => {
+    let timer = null;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  };
+
+  // ══════════════════════════════════════════
+  //  1. SP ハンバーガーメニュー (.drop_btn + .drop_menu)
+  // ══════════════════════════════════════════
+
+  const dropBtn = document.querySelector(".drop_btn");
+  const dropMenu = document.querySelector(".drop_menu");
 
   if (dropBtn && dropMenu) {
-    dropBtn.addEventListener("click", function () {
-      var isOpen = dropBtn.classList.toggle("active");
-      dropMenu.classList.toggle("is-open");
-      dropBtn.setAttribute("aria-expanded", String(isOpen));
-      dropMenu.setAttribute("aria-hidden", String(!isOpen));
+    /** メニューを閉じる共通処理 */
+    const closeMenu = () => {
+      dropBtn.classList.remove("active");
+      dropMenu.classList.remove("is-open");
+      dropBtn.setAttribute("aria-expanded", "false");
+      dropMenu.setAttribute("aria-hidden", "true");
+    };
+
+    /** メニューを開く共通処理 */
+    const openMenu = () => {
+      dropBtn.classList.add("active");
+      dropMenu.classList.add("is-open");
+      dropBtn.setAttribute("aria-expanded", "true");
+      dropMenu.setAttribute("aria-hidden", "false");
+    };
+
+    /** メニューが開いているか判定 */
+    const isMenuOpen = () => dropBtn.classList.contains("active");
+
+    // ハンバーガーボタンのクリック
+    dropBtn.addEventListener("click", () => {
+      if (isMenuOpen()) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
-    var menuLinks = dropMenu.querySelectorAll("a");
-    for (var i = 0; i < menuLinks.length; i++) {
-      menuLinks[i].addEventListener("click", function () {
-        dropBtn.classList.remove("active");
-        dropMenu.classList.remove("is-open");
-        dropBtn.setAttribute("aria-expanded", "false");
-        dropMenu.setAttribute("aria-hidden", "true");
-      });
-    }
+    // メニュー内リンククリックで閉じる
+    dropMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    // ESCキーで閉じる
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isMenuOpen()) {
+        closeMenu();
+        dropBtn.focus();
+      }
+    });
+
+    // メニュー外クリックで閉じる
+    document.addEventListener("click", (e) => {
+      if (isMenuOpen() && !dropBtn.contains(e.target) && !dropMenu.contains(e.target)) {
+        closeMenu();
+      }
+    });
   }
 
-  /* ========================================
-   * 2. Smooth Scroll（SPヘッダーオフセット対応）
-   * ======================================== */
-  document.addEventListener("click", function (e) {
-    var anchor = e.target.closest('a[href^="#"]');
+  // ══════════════════════════════════════════
+  //  2. スムーススクロール
+  // ══════════════════════════════════════════
+
+  document.addEventListener("click", (e) => {
+    const anchor = e.target.closest('a[href^="#"]');
     if (!anchor) return;
 
-    var href = anchor.getAttribute("href");
+    const href = anchor.getAttribute("href");
     if (!href || href === "#") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
-    var target = document.querySelector(href);
+    const target = document.querySelector(href);
     if (target) {
       e.preventDefault();
-      var headerHeight = 0;
-      var spHeader = document.querySelector(".sp_header");
-      if (spHeader && window.getComputedStyle(spHeader).display !== "none") {
-        headerHeight = spHeader.offsetHeight;
-      }
-      var topPos = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+      const siteHeader = document.querySelector(".site-header");
+      const headerHeight = siteHeader ? siteHeader.offsetHeight : 0;
+      const topPos =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        headerHeight -
+        10;
       window.scrollTo({ top: topPos, behavior: "smooth" });
     }
   });
 
-  /* ========================================
-   * 3. Page Top Button（鷹ノ羽パターン）
-   * ======================================== */
-  var pageTopBtn = document.getElementById("pageTop");
+  // ══════════════════════════════════════════
+  //  3. ページトップボタン（PC + SP）
+  // ══════════════════════════════════════════
 
-  if (pageTopBtn) {
-    var togglePageTop = function () {
-      if (window.pageYOffset > 200) {
-        pageTopBtn.classList.add("is-visible");
-      } else {
-        pageTopBtn.classList.remove("is-visible");
-      }
+  const pageTopBtn = document.getElementById("pageTop");
+  const pageTopSpBtn = document.getElementById("pageTopSp");
+
+  /** ページトップボタンの表示/非表示を切り替え */
+  const togglePageTopButtons = () => {
+    const scrolled = window.scrollY > 300;
+    if (pageTopBtn) {
+      pageTopBtn.classList.toggle("is-visible", scrolled);
+    }
+    if (pageTopSpBtn) {
+      pageTopSpBtn.classList.toggle("is-visible", scrolled);
+    }
+  };
+
+  if (pageTopBtn || pageTopSpBtn) {
+    window.addEventListener("scroll", throttle(togglePageTopButtons, 50), {
+      passive: true,
+    });
+    togglePageTopButtons();
+  }
+
+  // ══════════════════════════════════════════
+  //  4. PCスティッキーヘッダー
+  // ══════════════════════════════════════════
+
+  const siteHeader = document.querySelector(".site-header");
+
+  if (siteHeader) {
+    /** スクロール100px超で .is-scrolled クラスをトグル */
+    const handleStickyHeader = () => {
+      siteHeader.classList.toggle("is-scrolled", window.scrollY > 100);
     };
 
-    window.addEventListener("scroll", throttle(togglePageTop, 100), { passive: true });
-    togglePageTop();
+    window.addEventListener("scroll", throttle(handleStickyHeader, 50), {
+      passive: true,
+    });
+    handleStickyHeader();
   }
 
-  /* ========================================
-   * 4. Page Top Button SP
-   * ======================================== */
-  var pageTopSpBtn = document.getElementById("pageTopSp");
-  if (pageTopSpBtn) {
-    pageTopSpBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  // ══════════════════════════════════════════
+  //  5. スクロールフェードインアニメーション (IntersectionObserver)
+  // ══════════════════════════════════════════
+
+  const fadeElements = document.querySelectorAll(".fade-in");
+
+  if (fadeElements.length) {
+    const fadeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            fadeObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    fadeElements.forEach((el) => {
+      fadeObserver.observe(el);
     });
   }
 
-  /* ========================================
-   * 5. Fade-in on Scroll（IntersectionObserver）
-   * ======================================== */
-  var fadeElements = document.querySelectorAll(".service .item, .step-item, .category-card, .shop-card, .about-point, .blog_area li");
+  // ══════════════════════════════════════════
+  //  6. 統計カウントアップ (.stat-num)
+  // ══════════════════════════════════════════
 
-  if ("IntersectionObserver" in window && fadeElements.length) {
-    fadeElements.forEach(function (el) {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(20px)";
-      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+  const statNums = document.querySelectorAll(".stat-num");
+
+  if (statNums.length) {
+    /**
+     * テキストからターゲット数値・サフィックスを解析
+     * "50,000" -> { value: 50000, suffix: "", hasComma: true }
+     * "7"      -> { value: 7,     suffix: "", hasComma: false }
+     * "10%"    -> { value: 10,    suffix: "%", hasComma: false }
+     */
+    const parseStatValue = (text) => {
+      const trimmed = text.trim();
+      const match = trimmed.match(/^([0-9,]+)(.*)$/);
+      if (!match) return null;
+
+      const numStr = match[1];
+      const suffix = match[2] || "";
+      const hasComma = numStr.includes(",");
+      const value = parseInt(numStr.replace(/,/g, ""), 10);
+
+      if (isNaN(value)) return null;
+      return { value, suffix, hasComma };
+    };
+
+    /** 数値をカンマ区切りでフォーマット */
+    const formatNumber = (num, useComma) => {
+      if (!useComma) return String(num);
+      return num.toLocaleString("ja-JP");
+    };
+
+    /** イージング関数 (ease-out cubic) */
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    /** カウントアップアニメーション */
+    const animateCount = (el, target, suffix, hasComma, duration = 2000) => {
+      const startTime = performance.now();
+
+      const update = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutCubic(progress);
+        const currentValue = Math.round(easedProgress * target);
+
+        el.textContent = formatNumber(currentValue, hasComma) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      };
+
+      requestAnimationFrame(update);
+    };
+
+    const statObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const parsed = parseStatValue(el.textContent);
+
+            if (parsed) {
+              el.textContent = "0" + parsed.suffix;
+              animateCount(el, parsed.value, parsed.suffix, parsed.hasComma, 2000);
+            }
+
+            statObserver.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    statNums.forEach((el) => {
+      statObserver.observe(el);
     });
+  }
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = "1";
-          entry.target.style.transform = "translateY(0)";
-          observer.unobserve(entry.target);
+  // ══════════════════════════════════════════
+  //  7. FAQ アコーディオンアニメーション (details/summary)
+  // ══════════════════════════════════════════
+
+  const faqItems = document.querySelectorAll(".faq-item");
+
+  if (faqItems.length) {
+    faqItems.forEach((details) => {
+      const summary = details.querySelector("summary");
+      if (!summary) return;
+
+      // summary 以外のコンテンツをラッパーで囲む
+      const contentNodes = [];
+      let sibling = summary.nextSibling;
+      while (sibling) {
+        contentNodes.push(sibling);
+        sibling = sibling.nextSibling;
+      }
+
+      // 既にラッパーがある場合はスキップ
+      if (
+        contentNodes.length === 1 &&
+        contentNodes[0].classList &&
+        contentNodes[0].classList.contains("faq-content-wrapper")
+      ) {
+        return;
+      }
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "faq-content-wrapper";
+      wrapper.style.overflow = "hidden";
+      wrapper.style.transition = "max-height 0.3s ease, opacity 0.3s ease";
+      wrapper.style.maxHeight = "0";
+      wrapper.style.opacity = "0";
+      contentNodes.forEach((node) => wrapper.appendChild(node));
+      details.appendChild(wrapper);
+
+      // アニメーション中フラグ（連打防止）
+      let isAnimating = false;
+
+      summary.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (isAnimating) return;
+        isAnimating = true;
+
+        if (details.open) {
+          // ── 閉じるアニメーション ──
+          wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              wrapper.style.maxHeight = "0";
+              wrapper.style.opacity = "0";
+            });
+          });
+          const onClose = () => {
+            wrapper.removeEventListener("transitionend", onClose);
+            details.removeAttribute("open");
+            isAnimating = false;
+          };
+          wrapper.addEventListener("transitionend", onClose);
+        } else {
+          // ── 開くアニメーション ──
+          details.setAttribute("open", "");
+          const height = wrapper.scrollHeight;
+          wrapper.style.maxHeight = "0";
+          wrapper.style.opacity = "0";
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              wrapper.style.maxHeight = height + "px";
+              wrapper.style.opacity = "1";
+            });
+          });
+          const onOpen = () => {
+            wrapper.removeEventListener("transitionend", onOpen);
+            wrapper.style.maxHeight = "none";
+            isAnimating = false;
+          };
+          wrapper.addEventListener("transitionend", onOpen);
         }
       });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+    });
+  }
 
-    fadeElements.forEach(function (el) {
-      observer.observe(el);
+  // ══════════════════════════════════════════
+  //  8. フォームバリデーション (#contact form)
+  // ══════════════════════════════════════════
+
+  const contactSection = document.getElementById("contact");
+  const contactForm = contactSection ? contactSection.querySelector("form") : null;
+
+  if (contactForm) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const katakanaRegex = /^[ァ-ヶー　\s]+$/;
+    const phoneRegex = /^[0-9\-]{10,13}$/;
+
+    /**
+     * エラーメッセージを表示
+     * @param {HTMLElement} field - 対象のフォームフィールド
+     * @param {string} message - エラーメッセージ
+     */
+    const showError = (field, message) => {
+      const formGroup = field.closest(".form-group");
+      if (!formGroup) return;
+
+      // 既存のエラーメッセージを除去
+      const existing = formGroup.querySelector(".error-message");
+      if (existing) existing.remove();
+
+      formGroup.classList.add("is-invalid");
+
+      const errorEl = document.createElement("span");
+      errorEl.className = "error-message";
+      errorEl.textContent = message;
+      field.parentNode.insertBefore(errorEl, field.nextSibling);
+    };
+
+    /**
+     * エラーメッセージをクリア
+     * @param {HTMLElement} field - 対象のフォームフィールド
+     */
+    const clearError = (field) => {
+      const formGroup = field.closest(".form-group");
+      if (!formGroup) return;
+
+      formGroup.classList.remove("is-invalid");
+      const existing = formGroup.querySelector(".error-message");
+      if (existing) existing.remove();
+    };
+
+    /**
+     * 個別フィールドのバリデーション
+     * @param {HTMLElement} field - 対象のフォームフィールド
+     * @returns {boolean} バリデーション結果
+     */
+    const validateField = (field) => {
+      const name = field.getAttribute("name") || field.id || "";
+      const value = field.value.trim();
+      const tagName = field.tagName.toLowerCase();
+
+      clearError(field);
+
+      // お名前: 必須
+      if (name === "name") {
+        if (!value) {
+          showError(field, "お名前を入力してください。");
+          return false;
+        }
+        return true;
+      }
+
+      // お名前（フリガナ）: 必須 + カタカナチェック
+      if (name === "furigana" || name === "kana") {
+        if (!value) {
+          showError(field, "フリガナを入力してください。");
+          return false;
+        }
+        if (!katakanaRegex.test(value)) {
+          showError(field, "カタカナで入力してください。");
+          return false;
+        }
+        return true;
+      }
+
+      // メールアドレス: 必須 + フォーマット検証
+      if (name === "email") {
+        if (!value) {
+          showError(field, "メールアドレスを入力してください。");
+          return false;
+        }
+        if (!emailRegex.test(value)) {
+          showError(field, "正しいメールアドレスを入力してください。");
+          return false;
+        }
+        return true;
+      }
+
+      // 電話番号: 必須 + フォーマット
+      if (name === "phone" || name === "tel") {
+        if (!value) {
+          showError(field, "電話番号を入力してください。");
+          return false;
+        }
+        if (!phoneRegex.test(value)) {
+          showError(field, "正しい電話番号を入力してください（例: 090-1234-5678）。");
+          return false;
+        }
+        return true;
+      }
+
+      // お問い合わせ種別: 必須（select）
+      if (name === "inquiry_type" || name === "type") {
+        if (tagName === "select" && (!value || value === "")) {
+          showError(field, "お問い合わせ種別を選択してください。");
+          return false;
+        }
+        return true;
+      }
+
+      // プライバシーポリシー同意: チェック必須
+      if (name === "privacy" || name === "agree") {
+        if (field.type === "checkbox" && !field.checked) {
+          showError(field, "プライバシーポリシーに同意してください。");
+          return false;
+        }
+        return true;
+      }
+
+      return true;
+    };
+
+    // リアルタイムバリデーション: blurイベントで各フィールドを個別チェック
+    const formFields = contactForm.querySelectorAll("input, select, textarea");
+    formFields.forEach((field) => {
+      field.addEventListener("blur", () => {
+        validateField(field);
+      });
+    });
+
+    // 送信時: 全フィールドチェック
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let isValid = true;
+
+      formFields.forEach((field) => {
+        // hidden, submit, buttonタイプはスキップ
+        if (field.type === "hidden" || field.type === "submit" || field.type === "button") return;
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+
+      if (isValid) {
+        alert("デモサイトのため、実際には送信されません。");
+      }
+    });
+  }
+
+  // ══════════════════════════════════════════
+  //  9. レビュースライダー（SP対応） (.review-cards)
+  // ══════════════════════════════════════════
+
+  const reviewContainer = document.querySelector(".review-cards");
+  const spMediaQuery = window.matchMedia("(max-width: 768px)");
+
+  if (reviewContainer) {
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    // スライダー用スタイルを注入（SP時のみ）
+    const sliderStyle = document.createElement("style");
+    sliderStyle.textContent = `
+      @media (max-width: 768px) {
+        .review-cards {
+          display: flex;
+          gap: 15px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          padding-bottom: 10px;
+          cursor: grab;
+        }
+        .review-cards::-webkit-scrollbar {
+          display: none;
+        }
+        .review-cards.is-grabbing {
+          cursor: grabbing;
+          scroll-snap-type: none;
+        }
+        .review-cards > * {
+          flex-shrink: 0;
+          width: 85%;
+          scroll-snap-align: start;
+        }
+      }
+    `;
+    document.head.appendChild(sliderStyle);
+
+    // マウスドラッグ対応
+    reviewContainer.addEventListener("mousedown", (e) => {
+      if (!spMediaQuery.matches) return;
+      isDown = true;
+      reviewContainer.classList.add("is-grabbing");
+      startX = e.pageX - reviewContainer.offsetLeft;
+      scrollLeft = reviewContainer.scrollLeft;
+    });
+
+    reviewContainer.addEventListener("mouseleave", () => {
+      isDown = false;
+      reviewContainer.classList.remove("is-grabbing");
+    });
+
+    reviewContainer.addEventListener("mouseup", () => {
+      isDown = false;
+      reviewContainer.classList.remove("is-grabbing");
+    });
+
+    reviewContainer.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - reviewContainer.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      reviewContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    // タッチスワイプ対応（全リスナー passive: true）
+    let touchStartX = 0;
+    let touchScrollLeft = 0;
+
+    reviewContainer.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.touches[0].pageX;
+        touchScrollLeft = reviewContainer.scrollLeft;
+      },
+      { passive: true }
+    );
+
+    reviewContainer.addEventListener(
+      "touchmove",
+      (e) => {
+        const x = e.touches[0].pageX;
+        const walk = (touchStartX - x) * 1.2;
+        reviewContainer.scrollLeft = touchScrollLeft + walk;
+      },
+      { passive: true }
+    );
+
+    // resize時の再初期化（debounce使用）
+    const handleSliderResize = debounce(() => {
+      if (!spMediaQuery.matches) {
+        // PC表示に切り替わったらスクロール位置をリセット
+        reviewContainer.scrollLeft = 0;
+        reviewContainer.classList.remove("is-grabbing");
+        isDown = false;
+      }
+    }, 250);
+
+    window.addEventListener("resize", handleSliderResize, { passive: true });
+  }
+
+  // ══════════════════════════════════════════
+  //  10. 買取価格カードのホバーエフェクト (.price-card)
+  // ══════════════════════════════════════════
+
+  const priceCards = document.querySelectorAll(".price-card");
+
+  if (priceCards.length) {
+    // タッチデバイス判定: SP時は無効
+    const isTouchDevice = () =>
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    priceCards.forEach((card) => {
+      card.classList.add("price-card--3d");
+
+      card.addEventListener("mousemove", (e) => {
+        if (isTouchDevice()) return;
+
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left; // カード内でのX座標
+        const y = e.clientY - rect.top;  // カード内でのY座標
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        // 中心からの距離を -1 ~ 1 に正規化
+        const rotateY = ((x - centerX) / centerX) * 8;  // 最大8度
+        const rotateX = ((centerY - y) / centerY) * 8;  // 最大8度
+
+        card.style.transform =
+          `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg)";
+      });
     });
   }
 });
