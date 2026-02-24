@@ -214,6 +214,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ══════════════════════════════════════════
+  //  4b. Scroll-hide SP Header
+  // ══════════════════════════════════════════
+
+  if (siteHeader && spMediaQuery.matches) {
+    let lastScrollY = 0;
+    const headerHeight = 54;
+
+    window.addEventListener("scroll", throttle(() => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > headerHeight) {
+        if (currentScrollY > lastScrollY) {
+          siteHeader.classList.add("is-hidden");
+        } else {
+          siteHeader.classList.remove("is-hidden");
+        }
+      } else {
+        siteHeader.classList.remove("is-hidden");
+      }
+      lastScrollY = currentScrollY;
+    }, 50), { passive: true });
+  }
+
+  // ══════════════════════════════════════════
   //  5. スクロールプログレスバー [NEW]
   // ══════════════════════════════════════════
 

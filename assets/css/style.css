@@ -174,6 +174,13 @@ summary:focus-visible,
   display: none;
 }
 
+/* Ensure SP elements are hidden at intermediate sizes (769px+) */
+@media (min-width: 769px) {
+  .sp-on {
+    display: none;
+  }
+}
+
 /* ==========================================================
    3. SECTION HEADING (unified heading style)
    ========================================================== */
@@ -820,18 +827,13 @@ summary:focus-visible,
 }
 
 .service-card__img {
-  overflow: hidden;
-}
-
-.service-card__img img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  transition: transform var(--transition-slow);
-}
-
-.service-card:hover .service-card__img img {
-  transform: scale(1.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius) var(--radius) 0 0;
+  color: var(--color-primary);
 }
 
 .service-card__body {
@@ -1212,13 +1214,15 @@ summary:focus-visible,
 }
 
 .step-img {
-  overflow: hidden;
-}
-
-.step-img img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 16px;
+  background: var(--color-bg-alt);
+  border-radius: 50%;
+  color: var(--color-primary);
 }
 
 .step-num {
@@ -2171,10 +2175,6 @@ footer .wrapper {
   .pc-on { display: none; }
   .sp-on { display: block; }
 
-  body.home main {
-    padding-top: 72px;
-  }
-
   /* Hero */
   .hero {
     min-height: 80vh;
@@ -2210,8 +2210,8 @@ footer .wrapper {
     gap: 24px;
   }
 
-  .service-card__img img {
-    height: 180px;
+  .service-card__img {
+    height: 140px;
   }
 
   /* [Fix #15] About: single column on SP */
@@ -2368,7 +2368,29 @@ footer .wrapper {
     left: 0;
     width: 100%;
     background: rgba(255,255,255,0.97);
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: 1px solid var(--color-accent);
+    transition: transform 0.3s ease;
+  }
+
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  .sp_header_block {
+    padding: 6px 12px;
+  }
+
+  .sp_header_block .logo img {
+    height: 26px;
+  }
+
+  .drop_btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  body.home main {
+    padding-top: 54px;
   }
 
   /* Page Top: raise above SP floating bar */
