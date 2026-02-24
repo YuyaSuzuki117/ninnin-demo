@@ -18,6 +18,9 @@
   --color-accent: #cfcabe;
   --color-gold: #b8860b;
   --color-gold-light: #daa520;
+  --color-pikachu-yellow: #FFCB05;
+  --color-pikachu-yellow-dark: #E6B800;
+  --color-pikachu-yellow-light: #FFF3B0;
 
   /* Backgrounds */
   --color-bg: #f9f9f9;
@@ -203,7 +206,7 @@ summary:focus-visible,
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: var(--color-gold);
+  background: var(--color-pikachu-yellow);
 }
 
 .section-heading--white {
@@ -348,6 +351,7 @@ summary:focus-visible,
 /* --- Global Navigation --- */
 .g-navi {
   background: var(--color-bg-dark);
+  border-bottom: 3px solid var(--color-pikachu-yellow);
 }
 
 .g-navi ul {
@@ -391,13 +395,13 @@ summary:focus-visible,
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--color-gold-light);
+  background: var(--color-pikachu-yellow);
   transform: scaleX(0);
   transition: transform var(--transition);
 }
 
 .g-navi li a:hover {
-  color: var(--color-gold-light);
+  color: var(--color-pikachu-yellow);
 }
 
 .g-navi li a:hover::after {
@@ -411,8 +415,9 @@ summary:focus-visible,
 }
 
 /* --- SP Header --- */
+/* NOTE: display:flex is set inside @media (max-width:768px) only.
+   Base display is controlled by .sp-on { display:none } */
 .sp_header_block {
-  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 16px;
@@ -517,13 +522,15 @@ summary:focus-visible,
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--color-bg-dark);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2019 50%, #3a2a10 100%);
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(216,97,60,0.15) 0%, transparent 60%);
+  background:
+    radial-gradient(ellipse at 80% 40%, rgba(255,203,5,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(216,97,60,0.12) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -552,6 +559,10 @@ summary:focus-visible,
   color: var(--color-white);
 }
 
+.hero h1 .yellow {
+  color: var(--color-pikachu-yellow);
+}
+
 .hero-sub {
   font-size: 1.1rem;
   opacity: 0.8;
@@ -561,11 +572,11 @@ summary:focus-visible,
 
 .hero-badge {
   display: inline-block;
-  background: var(--color-gold);
+  background: var(--color-pikachu-yellow);
   color: var(--color-bg-dark);
-  padding: 6px 20px;
+  padding: 8px 24px;
   border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
   margin-top: 28px;
 }
@@ -579,18 +590,47 @@ summary:focus-visible,
 .cta-hero-main {
   font-size: 1.1rem;
   padding: 18px 40px;
+  background: var(--color-pikachu-yellow);
+  color: var(--color-bg-dark);
+  border: 2px solid var(--color-pikachu-yellow);
 }
 
-.hero-pikachu {
-  width: 380px;
+.cta-hero-main:hover {
+  background: var(--color-pikachu-yellow-dark);
+  border-color: var(--color-pikachu-yellow-dark);
+  color: var(--color-bg-dark);
+}
+
+.hero-visual {
+  position: relative;
+  width: 420px;
   flex-shrink: 0;
+}
+
+.hero-ninnin {
+  width: 100%;
   animation: float 3s ease-in-out infinite;
 }
 
-.hero-pikachu img {
+.hero-ninnin img {
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 20px 40px rgba(216,97,60,0.4));
+  filter: drop-shadow(0 20px 40px rgba(255,203,5,0.35));
+}
+
+.hero-pikachu-mini {
+  position: absolute;
+  bottom: -10px;
+  right: -20px;
+  width: 120px;
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.hero-pikachu-mini img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 20px rgba(255,203,5,0.4));
 }
 
 @keyframes float {
@@ -648,7 +688,7 @@ summary:focus-visible,
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--color-gold-light);
+  color: var(--color-pikachu-yellow);
   margin-bottom: 2px;
 }
 
@@ -2007,15 +2047,23 @@ footer .wrapper {
   transition: opacity var(--transition-fast);
 }
 
-.sp-float-tel a,
-.sp-float-form a {
+.sp-float-tel a {
   background: var(--color-primary);
 }
 
-.sp-float-tel a:hover,
-.sp-float-form a:hover {
+.sp-float-form a {
+  background: var(--color-pikachu-yellow);
+  color: var(--color-bg-dark);
+}
+
+.sp-float-tel a:hover {
   background: var(--color-primary-dark);
   color: var(--color-text-inverse);
+}
+
+.sp-float-form a:hover {
+  background: var(--color-pikachu-yellow-dark);
+  color: var(--color-bg-dark);
 }
 
 .sp-float-top a {
@@ -2074,7 +2122,7 @@ footer .wrapper {
   top: 0;
   left: 0;
   height: 3px;
-  background: var(--color-primary);
+  background: var(--color-pikachu-yellow);
   z-index: var(--z-floating, 500);
   transition: width 0.1s linear;
   pointer-events: none;
@@ -2136,8 +2184,8 @@ footer .wrapper {
   }
 
   /* Hero */
-  .hero-character {
-    width: 280px;
+  .hero-visual {
+    width: 320px;
   }
 
   /* News: sidebar shrink */
@@ -2173,7 +2221,7 @@ footer .wrapper {
    ========================================================== */
 @media (max-width: 768px) {
   :root {
-    --section-gap: var(--section-gap-sp);
+    --section-gap: 50px;
   }
 
   .pc-on { display: none; }
@@ -2191,10 +2239,16 @@ footer .wrapper {
     padding: 20px 0;
   }
 
-  .hero-pikachu {
-    width: 200px;
+  .hero-visual {
+    width: 220px;
     order: -1;
     margin-bottom: 16px;
+  }
+
+  .hero-pikachu-mini {
+    width: 80px;
+    bottom: -5px;
+    right: -10px;
   }
 
   .hero h1 {
@@ -2210,23 +2264,34 @@ footer .wrapper {
     padding: 14px 32px;
   }
 
-  /* Trust badges */
+  /* Trust badges: 2x2 grid */
   .trust-badges .wrapper {
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
-  /* Service: 1 column */
+  /* Service: horizontal scroll snap */
   .service-cards {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .service-cards::-webkit-scrollbar { display: none; }
+  .service-card {
+    min-width: 75%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
   }
 
   .service-card__img {
     height: 140px;
   }
 
-  /* [Fix #15] About: single column on SP */
+  /* About: compact on SP */
   .about-bg {
     min-height: auto;
   }
@@ -2234,6 +2299,10 @@ footer .wrapper {
   .about-columns {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .about-visual {
+    display: none;
   }
 
   .about-text-box {
@@ -2244,42 +2313,91 @@ footer .wrapper {
     font-size: 1.5rem;
   }
 
-  /* Price: 2 columns */
-  .price-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  .about-points {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    text-align: center;
   }
 
-  /* Delivery purchase: 1 column */
+  .about-point {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* Price: horizontal scroll snap */
+  .price-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .price-grid::-webkit-scrollbar { display: none; }
+  .price-card {
+    min-width: 60%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+
+  /* Delivery purchase: 1 column + compact images */
   .takuhai-content {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-
-  /* In-store: 1 column */
-  .step-flow {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .takuhai-left img,
+  .takuhai-right img {
+    max-height: 200px;
+    object-fit: contain;
   }
 
-  /* Category */
+  /* In-store: horizontal scroll snap */
+  .step-flow {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .step-flow::-webkit-scrollbar { display: none; }
+  .step-item {
+    min-width: 70%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+
+  /* Category: compact grid */
   .category-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
   }
 
   .category-card__img {
     height: 100px;
   }
 
-  /* [Fix #13] Category card SP font size: 0.625rem -> 0.75rem */
   .category-card__name {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     padding: 8px 4px;
   }
 
-  /* Shop: 1 column */
+  /* Shop: horizontal scroll snap */
+  .shop-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .shop-grid::-webkit-scrollbar { display: none; }
   .shop-card {
+    min-width: 85%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
     grid-template-columns: 1fr;
+    margin-bottom: 0;
   }
 
   .shop-card__img img {
@@ -2290,7 +2408,10 @@ footer .wrapper {
     padding: 16px 20px;
   }
 
-  /* News: 1 column */
+  /* News: 1 column, sidebar hidden */
+  .news-side {
+    display: none;
+  }
   .news-area {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -2320,6 +2441,25 @@ footer .wrapper {
     min-width: 85%;
     scroll-snap-align: start;
     flex-shrink: 0;
+  }
+
+  /* FAQ: compact padding */
+  .faq-item summary {
+    padding: 12px 40px 12px 48px;
+    font-size: 0.875rem;
+  }
+  .faq-item summary::before {
+    left: 12px;
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+  .faq-item summary::after {
+    right: 12px;
+    font-size: 1.25rem;
+  }
+  .faq-item p {
+    padding: 0 16px 16px 48px;
   }
 
   /* Contact: 1 column */
@@ -2408,6 +2548,7 @@ footer .wrapper {
   }
 
   .sp_header_block {
+    display: flex;
     padding: 6px 12px;
   }
 
@@ -2443,28 +2584,27 @@ footer .wrapper {
 @media (max-width: 480px) {
   /* Hero */
   .hero {
-    min-height: 70vh;
+    min-height: auto;
+    padding: 50px 0 30px;
+  }
+
+  .hero-visual {
+    width: 180px;
+  }
+
+  .hero-pikachu-mini {
+    width: 60px;
   }
 
   .hero-stats {
     gap: 16px;
   }
 
-  /* Price: 1 column */
-  .price-grid {
-    grid-template-columns: 1fr;
-  }
+  /* Price: keep horizontal scroll from 768px, no override needed */
 
-  /* Category: 2 columns */
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  /* Category: keep compact grid from 768px */
 
-  /* Trust badges: vertical stack */
-  .trust-badges .wrapper {
-    flex-direction: column;
-    gap: 12px;
-  }
+  /* Trust badges: keep 2x2 grid from 768px */
 
   /* CTA button shrink */
   .cta-primary {

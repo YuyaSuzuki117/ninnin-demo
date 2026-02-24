@@ -7,7 +7,7 @@
   <meta name="description" content="ポケモンカード高額買取専門店ニンニンは秋葉原・中野・池袋・大阪に全7店舗展開。宅配買取なら査定額いつでも10%UP！年中無休で買取対応中。50,000件以上の買取実績。">
   <link rel="canonical" href="https://nin-nin-pokeka.jp/">
   <!-- [7] theme-color -->
-  <meta name="theme-color" content="#d8613c">
+  <meta name="theme-color" content="#FFCB05">
   <!-- [8] robots noindex（デモサイト） -->
   <meta name="robots" content="noindex, nofollow">
 
@@ -28,7 +28,7 @@
   <link rel="apple-touch-icon" href="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/common/logo.png">
 
   <!-- [11] ヒーロー画像プリロード -->
-  <link rel="preload" as="image" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png">
+  <link rel="preload" as="image" href="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/index/main_visual_img.png">
 
   <!-- [10] Google Fonts ウェイト削減: 400;700;900 のみ（600削除） -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -252,7 +252,7 @@
       <div class="hero-overlay"></div>
       <div class="hero-content wrapper">
         <div class="hero-text">
-          <h1>ポケモンカード<br>高額買取専門店</h1>
+          <h1>ポケモンカード<br><span class="yellow">高額買取</span>専門店</h1>
           <p class="hero-sub">秋葉原・中野・池袋・大阪<br>全7店舗 年中無休</p>
           <div class="hero-cta">
             <a href="#contact" class="cta-primary cta-hero-main">無料査定を申し込む</a>
@@ -263,8 +263,13 @@
           </div>
           <p class="hero-badge">宅配買取なら査定額 10%UP</p>
         </div>
-        <div class="hero-pikachu">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="ピカチュウ" width="475" height="475" loading="eager" fetchpriority="high">
+        <div class="hero-visual">
+          <div class="hero-ninnin">
+            <img src="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/index/main_visual_img.png" alt="ニンニン キャラクター" width="500" height="500" loading="eager" fetchpriority="high">
+          </div>
+          <div class="hero-pikachu-mini">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="ピカチュウ" width="475" height="475" loading="eager">
+          </div>
         </div>
       </div>
     </section>
@@ -672,6 +677,7 @@
         <h2 class="section-heading section-heading--white">店舗案内</h2>
         <p class="section-lead section-lead--white">秋葉原・中野・池袋・大阪に全7店舗展開中</p>
 
+        <div class="shop-grid">
         <div class="shop-card fade-in">
           <div class="shop-card__img">
             <img src="https://nin-nin-pokeka.jp/develop/wp-content/themes/ninnin/img/index/ph_akihabara.png" alt="ニンニン秋葉原店の外観" width="400" height="300" loading="lazy">
@@ -779,6 +785,7 @@
           </div>
         </div>
 
+        </div><!-- /.shop-grid -->
       </div>
     </section>
 
