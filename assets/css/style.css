@@ -1,0 +1,1138 @@
+@charset "UTF-8";
+/* ============================================================
+   ポケカ専門店ニンニン
+   レイアウト: 鷹ノ羽陸運パターン忠実再現
+   カラー: ニンニン公式 (#cfcabe, #c2a990, #d8613c, #111, #f9f9f9)
+   ============================================================ */
+
+/* ==========================================================
+   1. RESET
+   ========================================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Yu Gothic", "游ゴシック", "Meiryo", "メイリオ", sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  font-weight: 400;
+  color: #333;
+  background: #f9f9f9;
+}
+a { color: #111; text-decoration: none; }
+a, a img, button { transition: .4s; }
+a img:hover { opacity: .7; }
+a:hover { color: #333; text-decoration: none; }
+ul { list-style: none; }
+img { max-width: 100%; height: auto; vertical-align: bottom; }
+address { font-style: normal; }
+dl { margin: 0; }
+dt, dd { margin: 0; }
+
+/* ==========================================================
+   2. LAYOUT HELPERS
+   ========================================================== */
+.wrapper { width: 1200px; margin: 0 auto; }
+.clearfix::after { content: ""; display: block; clear: both; }
+.pc-on { display: block; }
+.sp-on { display: none; }
+
+/* ==========================================================
+   3. PC HEADER（鷹ノ羽パターン忠実）
+   ========================================================== */
+.header-top {
+  background: #fff;
+  border-bottom: 1px solid #cfcabe;
+}
+.header-top .wrapper {
+  padding: 15px 0;
+}
+.header-top .left_box {
+  float: left;
+}
+.header-top .left_box .logo img {
+  height: 50px;
+}
+.header-top .right_box {
+  float: right;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.header-text p {
+  font-size: 12px;
+  color: #999;
+  position: relative;
+  padding-bottom: 5px;
+}
+.header-text p::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #cfcabe;
+}
+.header-tel {
+  font-size: 26px;
+  font-weight: 700;
+  color: #d8613c;
+  letter-spacing: 0.05em;
+}
+.header-tel-sub {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+}
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+.btn-header {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 3px;
+  transition: all .3s;
+}
+.btn-header--primary {
+  background: #d8613c;
+  color: #fff;
+}
+.btn-header--primary:hover {
+  background: #b84e30;
+  color: #fff;
+}
+.btn-header--secondary {
+  background: #fff;
+  color: #d8613c;
+  border: 2px solid #d8613c;
+}
+.btn-header--secondary:hover {
+  background: #d8613c;
+  color: #fff;
+}
+
+/* Global Navigation（鷹ノ羽パターン：6等分ナビ） */
+.g-navi {
+  background: #111;
+}
+.g-navi ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.g-navi li {
+  width: calc(100% / 6);
+  text-align: center;
+  position: relative;
+}
+.g-navi li:not(:last-child)::after {
+  content: "/";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.3);
+  font-size: 14px;
+}
+.g-navi li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+}
+.g-navi li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #d8613c;
+  transform: scaleX(0);
+  transition: transform .3s;
+}
+.g-navi li a:hover::after {
+  transform: scaleX(1);
+}
+.g-navi li a:hover {
+  color: #cfcabe;
+}
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* ==========================================================
+   4. SP HEADER（鷹ノ羽パターン）
+   ========================================================== */
+.sp_header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 500;
+  background: rgba(255,255,255,0.95);
+  border-bottom: 2px solid #d8613c;
+}
+.sp_header_block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+.sp_header .logo img {
+  height: 32px;
+}
+/* ハンバーガーボタン（鷹ノ羽パターン：56x56 色付き背景） */
+.drop_btn {
+  width: 56px;
+  height: 56px;
+  background-color: #d8613c;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  border-radius: 3px;
+  transition: .3s;
+}
+.drop_btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: .3s;
+}
+.drop_btn span:nth-child(1) { top: 18px; }
+.drop_btn span:nth-child(2) { top: 27px; }
+.drop_btn span:nth-child(3) { top: 36px; }
+.drop_btn.active span:nth-child(1) { top: 27px; transform: translateX(-50%) rotate(45deg); }
+.drop_btn.active span:nth-child(2) { opacity: 0; }
+.drop_btn.active span:nth-child(3) { top: 27px; transform: translateX(-50%) rotate(-45deg); }
+
+/* ドロップメニュー（鷹ノ羽パターン：2カラム） */
+.drop_menu {
+  display: none;
+  background: #fff;
+  border-top: 1px solid #cfcabe;
+}
+.drop_menu.is-open { display: block; }
+.drop_menu ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+.drop_menu li {
+  min-width: 50%;
+  border-bottom: 1px solid #cfcabe;
+  border-right: 1px solid #cfcabe;
+}
+.drop_menu li a {
+  display: block;
+  padding: 15px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #d8613c;
+}
+
+/* ==========================================================
+   5. VISUAL / HERO（鷹ノ羽パターン：フルワイド画像）
+   ========================================================== */
+.visual {
+  position: relative;
+  overflow: hidden;
+  background: #111;
+}
+.visual_img {
+  position: relative;
+  text-align: center;
+}
+.visual_img img {
+  width: 100%;
+  max-width: 1920px;
+  display: block;
+  margin: 0 auto;
+}
+.visual-character {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  width: 35%;
+  z-index: 2;
+  pointer-events: none;
+}
+.visual-character img {
+  width: 100%;
+}
+/* ビジュアル下のリンクバナー */
+.visual-links {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 3;
+}
+.visual-links a {
+  display: block;
+  width: calc(25% - 12px);
+}
+.visual-links a img {
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+/* ==========================================================
+   6. SERVICE（鷹ノ羽パターン：3カラムfloat + テキストオーバーラップ）
+   ========================================================== */
+.service {
+  padding: 60px 0;
+  background: #f5f5f5;
+}
+.service .item {
+  float: left;
+  width: calc((100% - 80px) / 3);
+  margin-right: 40px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: box-shadow .3s, transform .3s;
+}
+.service .item:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+}
+.service .item.last {
+  margin-right: 0;
+}
+.service .item .img {
+  overflow: hidden;
+}
+.service .item .img img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform .5s;
+}
+.service .item:hover .img img {
+  transform: scale(1.05);
+}
+.service .text_area {
+  position: relative;
+  top: -30px;
+  text-align: center;
+  padding: 0 20px 20px;
+}
+.service .text_area h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 5px;
+}
+.service .text_area .line {
+  width: 40px;
+  height: 2px;
+  background: #d8613c;
+  margin: 0 auto 15px;
+}
+.service .text_area p {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+/* ボタン（鷹ノ羽パターン：border + scaleフィル） */
+.button {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
+  border: 2px solid #111;
+  color: #111;
+  line-height: 50px;
+  padding: 0 40px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transition: all .3s;
+}
+.button::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  z-index: -1;
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all .3s;
+}
+.button:hover {
+  color: #fff;
+}
+.button:hover::after {
+  transform: scale(1);
+  opacity: 1;
+}
+.button--white {
+  background: transparent;
+  border-color: #fff;
+  color: #fff;
+}
+.button--white::after {
+  background: #fff;
+}
+.button--white:hover {
+  color: #111;
+}
+
+/* ==========================================================
+   7. ABOUT（鷹ノ羽パターン：背景付きフルワイド + テキスト右寄せ）
+   ========================================================== */
+.about {
+  position: relative;
+  overflow: hidden;
+}
+.about-bg {
+  background: linear-gradient(135deg, #c2a990 0%, #cfcabe 60%, #d8613c 100%);
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  padding: 60px 0;
+}
+.about-text-box {
+  float: right;
+  width: 550px;
+  color: #fff;
+}
+.about-title {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 30px;
+  line-height: 1.4;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+}
+.about-points {
+  margin-bottom: 30px;
+}
+.about-point {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  background: rgba(255,255,255,0.15);
+  padding: 15px 20px;
+  border-radius: 5px;
+}
+.point-num {
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  flex-shrink: 0;
+  width: 50px;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+.about-point p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+.about-point strong {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,0.5);
+}
+
+/* ==========================================================
+   8. SECTION HEADINGS（鷹ノ羽パターン）
+   ========================================================== */
+/* title01: 画像見出し + 下ボーダー + 左三角 */
+.title01 {
+  text-align: center;
+  margin-bottom: 45px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #cfcabe;
+  position: relative;
+}
+.title01::before {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #d8613c;
+}
+.title01 img {
+  max-height: 50px;
+}
+
+/* title02: 背景色付き見出し */
+.title02 {
+  background: #d8613c;
+  color: #fff;
+  text-align: center;
+  padding: 12px 30px;
+  margin-bottom: 45px;
+  font-size: 22px;
+  font-weight: 700;
+}
+.title02 img {
+  max-height: 40px;
+}
+
+/* ==========================================================
+   9. 宅配買取セクション
+   ========================================================== */
+.takuhai-section {
+  padding: 70px 0;
+  background: #fff;
+}
+.takuhai-content {
+  margin-top: 30px;
+}
+.takuhai-left {
+  float: left;
+  width: 48%;
+}
+.takuhai-right {
+  float: right;
+  width: 48%;
+}
+.takuhai-notice {
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  background: #fdf0e0;
+  padding: 20px;
+  border-radius: 5px;
+  border-left: 4px solid #d8613c;
+}
+.notice-icon {
+  width: 50px;
+  flex-shrink: 0;
+}
+.takuhai-notice p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.takuhai-notice strong {
+  color: #d8613c;
+  font-weight: 700;
+}
+
+/* ==========================================================
+   10. 店頭買取セクション（ステップ）
+   ========================================================== */
+.tentou-section {
+  padding: 70px 0;
+  background: #f9f9f9;
+}
+.section-lead {
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 40px;
+}
+.step-flow {
+  display: flex;
+  gap: 30px;
+}
+.step-item {
+  flex: 1;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+}
+.step-img {
+  overflow: hidden;
+}
+.step-img img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.step-num {
+  display: inline-block;
+  margin-top: -20px;
+  position: relative;
+  z-index: 1;
+  background: #d8613c;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 900;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+}
+.step-item h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 15px 0 10px;
+  color: #111;
+}
+.step-item p {
+  font-size: 13px;
+  color: #666;
+  padding: 0 20px 25px;
+  line-height: 1.7;
+}
+
+/* ==========================================================
+   11. 買取カテゴリ（カード画像付きグリッド）
+   ========================================================== */
+.category {
+  padding: 70px 0;
+  background: #fff;
+}
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.category-card {
+  width: calc((100% - 90px) / 7);
+  text-align: center;
+  display: block;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: border-color .3s, transform .3s;
+}
+.category-card:hover {
+  border-color: #d8613c;
+  transform: translateY(-3px);
+}
+.category-card__img {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+.category-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s;
+}
+.category-card:hover .category-card__img img {
+  transform: scale(1.08);
+}
+.category-card__name {
+  display: block;
+  padding: 8px 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #333;
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* ==========================================================
+   12. 店舗案内（鷹ノ羽パターン：写真左+情報右のfloat）
+   ========================================================== */
+.shop-section {
+  padding: 70px 0;
+  background: #f9f9f9;
+}
+.shop-card {
+  margin-bottom: 30px;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid #d8613c;
+}
+.shop-card__img {
+  float: left;
+  width: 300px;
+}
+.shop-card__img img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.shop-card__info {
+  margin-left: 320px;
+  padding: 20px 25px;
+}
+.shop-card__info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #d8613c;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #cfcabe;
+}
+.shop-card__info dl {
+  display: flex;
+  flex-wrap: wrap;
+}
+.shop-card__info dt {
+  width: 60px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #999;
+  padding: 4px 0;
+}
+.shop-card__info dd {
+  width: calc(100% - 60px);
+  font-size: 13px;
+  padding: 4px 0;
+}
+.shop-card__info dd a {
+  color: #d8613c;
+}
+.sns-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* ==========================================================
+   13. お知らせ（鷹ノ羽パターン：左メイン+右サイド）
+   ========================================================== */
+.news_topics {
+  padding: 70px 0;
+  background: #fff;
+}
+.news-area {
+  margin-top: 10px;
+}
+.news-main {
+  float: left;
+  width: 780px;
+}
+.news-side {
+  float: right;
+  width: 370px;
+  padding-left: 40px;
+}
+.blog_area li {
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.news-thumb {
+  float: left;
+  width: 150px;
+  margin-right: 20px;
+}
+.news-thumb img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.news-content {
+  overflow: hidden;
+}
+.news-content time {
+  font-size: 12px;
+  color: #999;
+  margin-right: 10px;
+}
+.news-cat {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 10px;
+  background: #d8613c;
+  color: #fff;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.news-content h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+.news-content h3 a { color: #333; }
+.news-content h3 a:hover { color: #d8613c; }
+/* サイドバー */
+.news-side h4 {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 15px;
+  background: #c2a990;
+  color: #fff;
+  border-radius: 3px;
+  margin-bottom: 15px;
+}
+.side-links li {
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.side-links li a {
+  font-size: 14px;
+  color: #333;
+  padding-left: 15px;
+  position: relative;
+}
+.side-links li a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 6px solid #d8613c;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+.side-links li a:hover { color: #d8613c; }
+
+/* ==========================================================
+   14. CONTACT（鷹ノ羽パターン：背景+半透明オーバーレイ中央）
+   ========================================================== */
+.contact {
+  background: linear-gradient(135deg, #c2a990, #d8613c);
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contact-overlay {
+  background: rgba(255,255,255,0.9);
+  width: 800px;
+  padding: 50px;
+  text-align: center;
+  border-radius: 5px;
+  margin: 40px auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.contact-inner h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 15px;
+}
+.contact-tel a {
+  font-size: 36px;
+  font-weight: 900;
+  color: #d8613c;
+  letter-spacing: 0.05em;
+}
+.contact-hours {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 25px;
+}
+
+/* ==========================================================
+   15. FOOTER（鷹ノ羽パターン忠実）
+   ========================================================== */
+footer {
+  background: #111;
+  color: #ccc;
+  padding-top: 50px;
+}
+footer .wrapper {
+  padding-bottom: 40px;
+}
+.footer-left {
+  float: left;
+  width: 400px;
+}
+.footer-logo {
+  margin-bottom: 20px;
+}
+.footer-logo img {
+  max-height: 40px;
+}
+.footer-address {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #aaa;
+}
+.footer-address dt {
+  font-weight: 700;
+  color: #cfcabe;
+  float: left;
+  width: 50px;
+}
+.footer-address dd {
+  margin-left: 55px;
+  margin-bottom: 5px;
+}
+.footer-license {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #888;
+}
+.footer-right {
+  float: right;
+}
+.f_nav {
+  display: flex;
+  gap: 30px;
+}
+.f_nav ul li {
+  padding: 5px 0;
+}
+.f_nav ul li a {
+  font-size: 13px;
+  color: #ccc;
+  padding-left: 15px;
+  position: relative;
+}
+.f_nav ul li a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 6px solid #d8613c;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+.f_nav ul li a:hover { color: #fff; }
+
+/* コピーライトバー（鷹ノ羽パターン） */
+.copyright {
+  background: #d8613c;
+  text-align: center;
+  padding: 8px 0;
+  color: #fff;
+  font-size: 12px;
+}
+
+/* ==========================================================
+   16. SP FLOATING BAR（鷹ノ羽パターン：3分割固定バー）
+   ========================================================== */
+.sp-floating {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  height: 64px;
+}
+.sp-floating ul {
+  display: flex;
+  height: 100%;
+}
+.sp-floating li {
+  height: 100%;
+}
+.sp-float-tel,
+.sp-float-form {
+  width: 43%;
+}
+.sp-float-top {
+  width: 14%;
+}
+.sp-floating li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.sp-float-tel a,
+.sp-float-form a {
+  background: #d8613c;
+}
+.sp-float-tel a:hover,
+.sp-float-form a:hover {
+  background: #b84e30;
+}
+.sp-float-top a {
+  background: #c2a990;
+}
+.sp-float-top a:hover {
+  background: #a8906e;
+}
+
+/* ==========================================================
+   17. PAGE TOP（鷹ノ羽パターン）
+   ========================================================== */
+#pageTop {
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+#pageTop.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+#pageTop a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #d8613c;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+#pageTop a:hover {
+  opacity: .7;
+}
+
+/* ==========================================================
+   18. RESPONSIVE（768px）
+   ========================================================== */
+@media (max-width: 767px) {
+  .pc-on { display: none !important; }
+  .sp-on { display: block !important; }
+
+  .wrapper { width: 100%; padding: 0 15px; }
+
+  body.home main {
+    padding-top: 76px;
+  }
+
+  /* Visual */
+  .visual_img img { width: 100%; }
+  .visual-character { width: 40%; top: 5%; right: 2%; }
+  .visual-links {
+    position: static;
+    transform: none;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 10px;
+    background: #111;
+  }
+  .visual-links a { width: calc(50% - 5px); }
+
+  /* Service */
+  .service { padding: 40px 0; }
+  .service .item {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
+  .service .item .img img { height: 180px; }
+
+  /* About */
+  .about-bg {
+    min-height: auto;
+    padding: 40px 0;
+  }
+  .about-text-box {
+    float: none;
+    width: 100%;
+  }
+  .about-title { font-size: 24px; }
+
+  /* 宅配・店頭 */
+  .takuhai-section,
+  .tentou-section {
+    padding: 40px 0;
+  }
+  .takuhai-left,
+  .takuhai-right {
+    float: none;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .step-flow {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Category */
+  .category { padding: 40px 0; }
+  .category-card {
+    width: calc((100% - 30px) / 4);
+  }
+  .category-card__img { height: 100px; }
+  .category-card__name { font-size: 10px; padding: 6px 3px; }
+
+  /* Shop */
+  .shop-section { padding: 40px 0; }
+  .shop-card__img {
+    float: none;
+    width: 100%;
+  }
+  .shop-card__img img { height: 180px; }
+  .shop-card__info {
+    margin-left: 0;
+    padding: 15px 20px;
+  }
+
+  /* News */
+  .news_topics { padding: 40px 0; }
+  .news-main {
+    float: none;
+    width: 100%;
+  }
+  .news-side {
+    float: none;
+    width: 100%;
+    padding-left: 0;
+    margin-top: 30px;
+  }
+  .news-thumb {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .news-thumb img { height: 150px; }
+
+  /* Contact */
+  .contact { min-height: auto; }
+  .contact-overlay {
+    width: 90%;
+    padding: 30px 20px;
+    margin: 30px auto;
+  }
+  .contact-tel a { font-size: 28px; }
+
+  /* Footer */
+  .footer-left,
+  .footer-right {
+    float: none;
+    width: 100%;
+    text-align: center;
+  }
+  .footer-left { margin-bottom: 25px; }
+  .footer-address dt { float: none; width: auto; }
+  .footer-address dd { margin-left: 0; }
+  .f_nav { justify-content: center; gap: 20px; }
+  footer .wrapper { padding-bottom: 30px; }
+
+  /* Footer bar space */
+  footer { margin-bottom: 64px; }
+}
+
+/* カテゴリ更にスマホ対応 */
+@media (max-width: 480px) {
+  .category-card {
+    width: calc((100% - 10px) / 2);
+  }
+}
